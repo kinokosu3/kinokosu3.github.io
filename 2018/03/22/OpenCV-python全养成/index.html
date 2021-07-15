@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="OpenCV-python全养成"><meta name="keywords" content="Python,OpenCV"><meta name="author" content="kinokosu3"><meta name="copyright" content="kinokosu3"><title>OpenCV-python全养成 | kinokosu3のblog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="false"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-number">2.</span> <span class="toc-text">入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">2.1.</span> <span class="toc-text">基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Matplotlib%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">Matplotlib使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">视频使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%98%E5%88%B6%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">绘制函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E9%80%9A%E9%81%93%E9%97%AE%E9%A2%98"><span class="toc-number">4.1.</span> <span class="toc-text">图像通道问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%AE%B5"><span class="toc-number">4.2.</span> <span class="toc-text">线段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E5%BD%A2"><span class="toc-number">4.3.</span> <span class="toc-text">矩形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%86"><span class="toc-number">4.4.</span> <span class="toc-text">圆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%BE%B9%E5%BD%A2"><span class="toc-number">4.5.</span> <span class="toc-text">多边形</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars3.githubusercontent.com/u/40928807?s=400&amp;u=c69eee6e44215a1115c239128617d77ff1104a42&amp;v=4"></div><div class="author-info__name text-center">kinokosu3</div><div class="author-info__description text-center">Python、Java、Algorithm、Essays</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/kinokosu3">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">49</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">42</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">7</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">kinokosu3のblog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Main</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Aategories</a><a class="site-page" href="/about">About me</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">OpenCV-python全养成</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2018-03-22</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>中文的opencv-python内容太少了！！！！没办法只好啃英文文档了,官方文档saikou！！！</p>
+<p>地址<a target="_blank" rel="noopener" href="https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html">OpenCV-Python Tutorials</a></p>
+<span id="more"></span>
+
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p><code>cv2.imread（），cv2.imshow（），cv2.imwrite（）</code></p>
+<p><code>cv2.imread()</code>,可以使用以下3个flag:</p>
+<ul>
+<li><code>cv2.IMREAD_COLOR</code>：加载彩色图像。图像的任何透明度都将被忽略。这是默认标志。</li>
+<li><code>cv2.IMREAD_GRAYSCALE</code>：以灰度模式加载图像</li>
+<li><code>cv2.IMREAD_UNCHANGED</code>：加载包含Alpha通道的图像</li>
+</ul>
+<p>代号是1,0,-1</p>
+<p><code>img = cv2.imread(&#39;1.jpg&#39;, 0)</code></p>
+<p><code>cv2.imshow()</code></p>
+<ul>
+<li><p><code>cv2.waitKey（）</code>是一个键盘绑定函数，如果传递0，他将无限期等待键盘输入，敲击后，程序会继续，也可以使用特定的按键。</p>
+</li>
+<li><p><code>cv2.destroyAllWindows（）</code>只是销毁我们创建的所有窗口。</p>
+</li>
+<li><p>如果你想销毁任何特定的窗口，使用函数<code>cv2.destroyWindow（）</code>作为参数传递确切的窗口名称.</p>
+</li>
+<li><p>如果你先创建了窗口，再创建图片，可以使用<code>cv2.namedWindow()</code>,有两个<code>flag</code>,默认<code>cv2.WINDOW_AUTOSIZE</code>,<code>cv2.WINDOW_NORMAL</code>可以调整窗口大小。</p>
+</li>
+</ul>
+<p><code>cv2.imwrite()</code> 保存一张图片 <code>cv2.imwrite(&#39;messigray.png&#39;,img)</code></p>
+<h3 id="Matplotlib使用"><a href="#Matplotlib使用" class="headerlink" title="Matplotlib使用"></a>Matplotlib使用</h3><p>一个简单的例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;messi5.jpg&#x27;</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">plt.imshow(img, cmap = <span class="string">&#x27;gray&#x27;</span>, interpolation = <span class="string">&#x27;bicubic&#x27;</span>)</span><br><span class="line">plt.xticks([]), plt.yticks([])  <span class="comment"># to hide tick values on X and Y axis</span></span><br><span class="line">plt.show()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>matplotlib.pylot.imshow</code>选项:</p>
+<p>cmap <a target="_blank" rel="noopener" href="https://matplotlib.org/gallery/color/colormap_reference.html#sphx-glr-gallery-color-colormap-reference-py">colormap-example</a></p>
+<ul>
+<li>perceptual uniform sequential colormaps：感知均匀的序列化 colormap</li>
+<li>sequential colormaps：序列化（连续化）色图 colormap； </li>
+<li><ul>
+<li>gray：0-255 级灰度，0：黑色，1：白色，黑底白字；</li>
+</ul>
+</li>
+<li><ul>
+<li>gray_r：翻转 gray 的显示，如果 gray 将图像显示为黑底白字，gray_r 会将其显示为白底黑字；</li>
+</ul>
+</li>
+<li>diverging colormaps：两端发散的色图 colormaps； </li>
+<li><ul>
+<li>seismic</li>
+</ul>
+</li>
+<li>qualitative colormaps：量化（离散化）色图；</li>
+<li>miscellaneous colormaps：其他色图；</li>
+</ul>
+<blockquote>
+<p>其实说白了就是一个色彩参照</p>
+</blockquote>
+<p>interpolation 内插法选择</p>
+<p>有很多选择，比如:</p>
+<ul>
+<li>nearest 最近邻内插</li>
+<li>bilinear 双线性内插</li>
+<li>bicubic 双三次内插</li>
+</ul>
+<h2 id="视频使用"><a href="#视频使用" class="headerlink" title="视频使用"></a>视频使用</h2><p>暂不了解</p>
+<h2 id="绘制函数"><a href="#绘制函数" class="headerlink" title="绘制函数"></a>绘制函数</h2><p>开始之前我们先讲一个问题</p>
+<h3 id="图像通道问题"><a href="#图像通道问题" class="headerlink" title="图像通道问题"></a>图像通道问题</h3><blockquote>
+<p>较难理解，知乎有一个同理问题<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/21849710">如何通俗易懂地讲解 Photoshop 中的「通道」概念？</a>这个通俗易懂，这个就是彩色图像模型，下面的解释来自<a target="_blank" rel="noopener" href="https://blog.csdn.net/chenyusiyuan/article/details/4662783">OpenCV学习笔记（7）图像的通道（channels）问题</a></p>
+</blockquote>
+<p>图像的通道只有1,3,4通道，因为我们描述一个像素点，如果是灰度，我们一个通道就可以了，如果一个像素点，有RGB三种颜色来描述它，就是三通道.4通道大概是加一个A通道(RGBA)，透明度，又叫alpha通道.</p>
+<h3 id="线段"><a href="#线段" class="headerlink" title="线段"></a>线段</h3><p>传递起始和结束坐标、颜色、厚度<br>比如蓝色的厚度5px的线段<br><code>cv2.line(img,(0,0),(511,511),(255,0,0),5)</code></p>
+<h3 id="矩形"><a href="#矩形" class="headerlink" title="矩形"></a>矩形</h3><p>左上角和右下角的坐标<br><code>cv2.rectangle(img,(384,0),(510,128),(0,255,0),3)</code></p>
+<h3 id="圆"><a href="#圆" class="headerlink" title="圆"></a>圆</h3><p>中心坐标和半径<br><code>cv2.circle(img,(447,63), 63, (0,0,255), -1)</code></p>
+<h3 id="多边形"><a href="#多边形" class="headerlink" title="多边形"></a>多边形</h3><p>顶点坐标，需要int32类型，将其转换成rowsx1x2的形状的数组，rows为顶点数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pts = np.array([[<span class="number">10</span>,<span class="number">5</span>],[<span class="number">20</span>,<span class="number">30</span>],[<span class="number">70</span>,<span class="number">20</span>],[<span class="number">50</span>,<span class="number">10</span>]], np.int32)</span><br><span class="line"><span class="comment"># newshape重置参数 行列每个</span></span><br><span class="line">pts = pts.reshape((-<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">cv2.polylines(img,[pts],<span class="literal">True</span>,(<span class="number">0</span>,<span class="number">255</span>,<span class="number">255</span>))</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>cv2.polylines用于绘制多组线，line只能绘制一组</p>
+</blockquote>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">kinokosu3</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kinokosu3.github.io/2018/03/22/OpenCV-python全养成/">http://kinokosu3.github.io/2018/03/22/OpenCV-python全养成/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kinokosu3.github.io">kinokosu3のblog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/OpenCV/">OpenCV</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2018/04/09/Vue%E4%BB%8E%E9%9B%B6%E5%85%BB%E6%88%90/"><i class="fa fa-chevron-left">  </i><span>Vue从零养成</span></a></div><div class="next-post pull-right"><a href="/2018/03/22/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%AC%94%E8%AE%B0/"><span>数字图像处理笔记</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By kinokosu3</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">空っぽな自分を今日も歌っていた</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="/js/third-party/anime.min.js"></script><script src="/js/third-party/jquery.min.js"></script><script src="/js/third-party/jquery.fancybox.min.js"></script><script src="/js/third-party/velocity.min.js"></script><script src="/js/third-party/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>

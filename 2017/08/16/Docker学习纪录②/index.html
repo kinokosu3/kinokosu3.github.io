@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Docker学习纪录②"><meta name="keywords" content="docker"><meta name="author" content="kinokosu3"><meta name="copyright" content="kinokosu3"><title>Docker学习纪录② | kinokosu3のblog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="false"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dockerfile%E5%AE%9A%E5%88%B6%E9%95%9C%E5%83%8F"><span class="toc-number">1.</span> <span class="toc-text">Dockerfile定制镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FROM%E6%8C%87%E5%AE%9A%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F"><span class="toc-number">2.</span> <span class="toc-text">FROM指定基础镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RUN%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">RUN执行命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%88context%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">镜像上下文（context）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dockerfile-%E6%8C%87%E4%BB%A4"><span class="toc-number">5.</span> <span class="toc-text">Dockerfile 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COPY-%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-number">6.</span> <span class="toc-text">COPY 复制文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ADD-%E6%9B%B4%E9%AB%98%E7%BA%A7%E7%9A%84%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-number">7.</span> <span class="toc-text">ADD 更高级的复制文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMD%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">8.</span> <span class="toc-text">CMD容器启动命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ENTRYPOINT%E5%85%A5%E5%8F%A3"><span class="toc-number">9.</span> <span class="toc-text">ENTRYPOINT入口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E4%BB%A5%E6%8A%8A%E9%95%9C%E5%83%8F%E5%BD%93%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8"><span class="toc-number">9.1.</span> <span class="toc-text">可以把镜像当命令使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E8%BF%90%E8%A1%8C%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">9.2.</span> <span class="toc-text">应用运行前的准备工作</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars3.githubusercontent.com/u/40928807?s=400&amp;u=c69eee6e44215a1115c239128617d77ff1104a42&amp;v=4"></div><div class="author-info__name text-center">kinokosu3</div><div class="author-info__description text-center">Python、Java、Algorithm、Essays</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/kinokosu3">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">49</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">42</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">7</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">kinokosu3のblog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Main</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Aategories</a><a class="site-page" href="/about">About me</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">Docker学习纪录②</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-08-16</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%BA%AA%E5%BD%95/">学习纪录</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><hr>
+<h3 id="Dockerfile定制镜像"><a href="#Dockerfile定制镜像" class="headerlink" title="Dockerfile定制镜像"></a>Dockerfile定制镜像</h3><blockquote>
+<p>大量引用Docker–从入门到实践的内容</p>
+</blockquote>
+<p>Gitbook地址：<a target="_blank" rel="noopener" href="https://www.gitbook.com/book/yeasy/docker_practice/details">Docker–从入门到实践</a></p>
+<h3 id="FROM指定基础镜像"><a href="#FROM指定基础镜像" class="headerlink" title="FROM指定基础镜像"></a>FROM指定基础镜像</h3><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx</span><br></pre></td></tr></table></figure>
+
+<p>指定一个<code>nginx</code>基础镜像</p>
+<h3 id="RUN执行命令"><a href="#RUN执行命令" class="headerlink" title="RUN执行命令"></a>RUN执行命令</h3><ul>
+<li>shell格式</li>
+<li>exec格式</li>
+</ul>
+<span id="more"></span>
+<p>dockerfile一条指令建立一层，<code>RUN</code>指令应该这么写</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> debian:jessie</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> buildDeps=<span class="string">&#x27;gcc libc6-dev make&#x27;</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get update \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get install -y <span class="variable">$buildDeps</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; wget -O redis.tar.gz <span class="string">&quot;http://download.redis.io/releases/redis-3.2.5.tar.gz&quot;</span> \</span></span><br><span class="line"><span class="bash">    &amp;&amp; mkdir -p /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; tar -xzf redis.tar.gz -C /usr/src/redis --strip-components=1 \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; make -C /usr/src/redis install \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -rf /var/lib/apt/lists/* \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm redis.tar.gz \</span></span><br><span class="line"><span class="bash">    &amp;&amp; rm -r /usr/src/redis \</span></span><br><span class="line"><span class="bash">    &amp;&amp; apt-get purge -y --auto-remove <span class="variable">$buildDeps</span></span></span><br></pre></td></tr></table></figure>
+
+<p>而不是一行一个<code>RUN</code></p>
+<h3 id="镜像上下文（context）"><a href="#镜像上下文（context）" class="headerlink" title="镜像上下文（context）"></a>镜像上下文（context）</h3><p>如果注意，会看到 <code>docker build</code> 命令最后有一个 <code>.</code>。<code>. </code>表示当前目录</p>
+<p>为什么呢？？</p>
+<p>理解<code>docker bulid</code>的工作原理，我们所用的docker命令是客户端工具，表面上我们是使用docker命令来执行各种docker功能，但是实际上所有的远程调用形式都是在服务端（docker引擎）完成。C/S设计</p>
+<p>如何才能让服务端获得本地文件呢？？</p>
+<p>这就引入了上下文的概念。当构建的时候，用户会指定构建镜像上下文的路径，docker build 命令得知这个路径后，会将路径下的所有内容打包，然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后，展开就会获得构建镜像所需的一切文件。</p>
+<p>比如</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="bash"> ./package.json /app/</span></span><br></pre></td></tr></table></figure>
+
+<p>这并不是要复制执行 <code>docker build</code> 命令所在的目录下的 package.json，也不是复制 Dockerfile 所在目录下的 package.json，而是复制 上下文（context） 目录下的 package.json</p>
+<h3 id="Dockerfile-指令"><a href="#Dockerfile-指令" class="headerlink" title="Dockerfile 指令"></a>Dockerfile 指令</h3><h3 id="COPY-复制文件"><a href="#COPY-复制文件" class="headerlink" title="COPY 复制文件"></a>COPY 复制文件</h3><p>格式</p>
+<ul>
+<li>COPY &lt;源路径&gt;… &lt;目标路径&gt;</li>
+<li>COPY [“&lt;源路径1&gt;”,… “&lt;目标路径&gt;”]</li>
+</ul>
+<p><code>COPY</code> 指令将从构建上下文目录中 &lt;源路径&gt; 的文件/目录复制到新的一层的镜像内的 &lt;目标路径&gt; 位置。比如：</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="bash"> package.json /usr/src/app/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ADD-更高级的复制文件"><a href="#ADD-更高级的复制文件" class="headerlink" title="ADD 更高级的复制文件"></a>ADD 更高级的复制文件</h3><p>格式和<code>COPY</code>差不多</p>
+<p>这个只适合自解压的场合</p>
+<p>如果 &lt;源路径&gt; 为一个 <code>tar</code> 压缩文件的话，压缩格式为 <code>gzip</code>, <code>bzip2</code> 以及 <code>xz</code> 的情况下，<code>ADD</code> 指令将会自动解压缩这个压缩文件到 &lt;目标路径&gt; 去。</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> scratch</span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> ubuntu-xenial-core-cloudimg-amd64-root.tar.gz /</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>这样就会自动解压到根目录</p>
+<h3 id="CMD容器启动命令"><a href="#CMD容器启动命令" class="headerlink" title="CMD容器启动命令"></a>CMD容器启动命令</h3><p><code>CMD</code> 指令就是用于指定默认的容器主进程的启动命令的。</p>
+<p>在运行时可以指定新的命令来替代镜像设置中的这个默认命令，比如，<code>ubuntu</code> 镜像默认的 <code>CMD</code> 是 <code>/bin/shell</code>，如果我们直接 <code>docker run -it ubuntu</code> 的话，会直接进入 <code>shell</code>。我们也可以在运行时指定运行别的命令，如 <code>docker run -it ubuntu cat /etc/os-release</code>。这就是用 <code>cat /etc/os-release</code> 命令替换了默认的 <code>/bin/shell</code> 命令了，输出了系统版本信息。</p>
+<p>Docker容器不是虚拟机，所有的应用都应该前台运行</p>
+<p>容器内没有后台的概念</p>
+<blockquote>
+<p>CMD、RUN、ENTRYPOINT概念理解可以看docker心得①</p>
+</blockquote>
+<p><code>shell</code>模式并不好用。推荐使用<code>exec</code>模式</p>
+<h3 id="ENTRYPOINT入口"><a href="#ENTRYPOINT入口" class="headerlink" title="ENTRYPOINT入口"></a>ENTRYPOINT入口</h3><h4 id="可以把镜像当命令使用"><a href="#可以把镜像当命令使用" class="headerlink" title="可以把镜像当命令使用"></a>可以把镜像当命令使用</h4><p>跟在镜像后的是command，会替换CMD的默认值（写在dockerfile里面的cmd值）</p>
+<p>如果都是使用<code>CMD</code>，我们在运行需要带参数的镜像就不行了会报错</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">&quot;curl&quot;</span>, <span class="string">&quot;-s&quot;</span>, <span class="string">&quot;http://ip.gs&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>这样就无法就后面接上参数</p>
+<p>报错，因为<code>-i</code>不是一个CMD命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run ip -i</span></span><br></pre></td></tr></table></figure>
+
+<p>如果是使用<code>ENTRYPOINT</code>，CMD的内容会将会作为参数传给<code>ENTRYPOINT</code>，比如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run ip -i</span></span><br></pre></td></tr></table></figure>
+<p><code>-i</code>将会作为新的CMD传回来</p>
+<h4 id="应用运行前的准备工作"><a href="#应用运行前的准备工作" class="headerlink" title="应用运行前的准备工作"></a>应用运行前的准备工作</h4><p>启动了容器就是启动主进程，但是我们在这之前需要准备一下其他的工作</p>
+<p>可以写一个脚本判断CMD后面的命令来选择执行某些工作</p>
+<p>比如启动一个redis容器的时候，如果不是redis-server命令启动，我们就会使用root用户登录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -it redis id</span></span><br><span class="line">uid=0(root) gid =0(root) groups =0 (root)</span><br></pre></td></tr></table></figure>
+
+
+<p>###未完待续~</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">kinokosu3</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kinokosu3.github.io/2017/08/16/Docker学习纪录②/">http://kinokosu3.github.io/2017/08/16/Docker学习纪录②/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kinokosu3.github.io">kinokosu3のblog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/docker/">docker</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2017/08/16/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8A%80%E5%B7%A7/"><i class="fa fa-chevron-left">  </i><span>python字符串技巧</span></a></div><div class="next-post pull-right"><a href="/2017/08/10/Docker%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97%E2%91%A0/"><span>Docker学习心得①</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By kinokosu3</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">空っぽな自分を今日も歌っていた</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="/js/third-party/anime.min.js"></script><script src="/js/third-party/jquery.min.js"></script><script src="/js/third-party/jquery.fancybox.min.js"></script><script src="/js/third-party/velocity.min.js"></script><script src="/js/third-party/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>

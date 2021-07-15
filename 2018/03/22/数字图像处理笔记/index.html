@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="数字图像处理笔记"><meta name="keywords" content="Image progressing"><meta name="author" content="kinokosu3"><meta name="copyright" content="kinokosu3"><title>数字图像处理笔记 | kinokosu3のblog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="false"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%BD%A2%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">图像形成模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%86%85%E6%8F%92"><span class="toc-number">2.</span> <span class="toc-text">图像内插</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD"><span class="toc-number">3.</span> <span class="toc-text">未完待续</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars3.githubusercontent.com/u/40928807?s=400&amp;u=c69eee6e44215a1115c239128617d77ff1104a42&amp;v=4"></div><div class="author-info__name text-center">kinokosu3</div><div class="author-info__description text-center">Python、Java、Algorithm、Essays</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/kinokosu3">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">49</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">42</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">7</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">kinokosu3のblog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Main</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Aategories</a><a class="site-page" href="/about">About me</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">数字图像处理笔记</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2018-03-22</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>一幅图像可以定义成一个二维函数,其中x和y是空间坐标(平面),而在任何一对空间坐标(x,y)处的幅值f成为图像在该点处的强度或者灰度,当x,y和灰度值f是有限的离散数值时, 我们成为该图像为数字图像。</p>
+<blockquote>
+<p>灰度是表明图像明暗的数值，即黑白图像中点的颜色深度，范围一般从0到255，白色为255 ，黑色为0，故黑白图片也称灰度图像。灰度值指的是单个像素点的亮度。灰度值越大表示越亮。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="图像形成模型"><a href="#图像形成模型" class="headerlink" title="图像形成模型"></a>图像形成模型</h2><ul>
+<li>0 &lt; f(x, y) &lt; ∞</li>
+</ul>
+<p>函数f(x, y)可以由两个分量来表示:入射分量和反射分量,分别表示为i(x,y),r(x,y),f(x, y) = i(x,y)r(x,y)</p>
+<ul>
+<li><p>0 &lt; i(x, y) &lt; ∞</p>
+</li>
+<li><p>0 &lt; r(x, y) &lt; 1</p>
+</li>
+</ul>
+<p>单色图像在任何坐标(x0, y0)处的强度(灰度)表示为:</p>
+<ul>
+<li>ι = f(x0, y0)</li>
+</ul>
+<p>由上式得取值范围:</p>
+<ul>
+<li>Lmin ≤ ι ≤ Lmax</li>
+</ul>
+<p>区间[Lmin, Lmax]成为灰度级(强度级), 实际情况常常令该区域为[0,L-1],其中ι=0为黑色,ι=L-1在灰度级中为白色。所有中间值是从黑色到白色之间变化的灰度色调。</p>
+<p>python-opencv示例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">IN[<span class="number">1</span>]:  <span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">        <span class="keyword">import</span> cv2</span><br><span class="line">        img = cv2.imread(<span class="string">&#x27;1.jpg&#x27;</span>, <span class="number">0</span>)</span><br><span class="line">        img.<span class="built_in">min</span>(), img.<span class="built_in">max</span>()</span><br><span class="line">OUT[<span class="number">1</span>]:(<span class="number">27</span>, <span class="number">255</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="图像内插"><a href="#图像内插" class="headerlink" title="图像内插"></a>图像内插</h2><p>从根本上看，内插是用已知数据来估计未知位置的数值的处理。比如调整图像的大小(收缩和放大)，这是基本的图像重取样方法。</p>
+<ul>
+<li>最近邻内插法</li>
+</ul>
+<p>比如一幅图由500x500放大到750x750，先创建一个750x750的网格，然后缩小和原图像匹配，显然收缩后的750x750网格像素间隔要小于原图像的像素间隔。然后我们在原图像中寻找最接近的像素，并把该像素的灰度赋给750x750网格的新像素。当我们完成对网格中所有点的灰度赋值后，就把图像扩展到原来规定的大小，得到图像。</p>
+<p>这种方法把原图像中最近邻的灰度赋给了每个新位置。</p>
+<ul>
+<li>双线性内插</li>
+</ul>
+<p>我们使用4个最近邻去估计给定位置的灰度，由v(x,y)来表示灰度值，公式为</p>
+<ul>
+<li><p>v(x,y) = ax + by + cxy + d</p>
+</li>
+<li><p>双三次内插</p>
+</li>
+</ul>
+<p>使用16个最近邻点，公式为:</p>
+<ul>
+<li>v(x,y) = ∑(3 i=0)∑(3 j=0)a(ij)x^i*y^j</li>
+</ul>
+<p>双三次内插在保持细节方面比双线性内插要好，商业图像编辑软件标准内插方法，比如Adobe Photoshop</p>
+<blockquote>
+<p>在matplotlib.pylot.imshow的一个选项中,interpolation是选择内插方法</p>
+</blockquote>
+<h2 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h2></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">kinokosu3</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kinokosu3.github.io/2018/03/22/数字图像处理笔记/">http://kinokosu3.github.io/2018/03/22/数字图像处理笔记/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kinokosu3.github.io">kinokosu3のblog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Image-progressing/">Image progressing</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2018/03/22/OpenCV-python%E5%85%A8%E5%85%BB%E6%88%90/"><i class="fa fa-chevron-left">  </i><span>OpenCV-python全养成</span></a></div><div class="next-post pull-right"><a href="/2018/03/18/DataMining%E7%9A%84%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/"><span>DataMining的职业规划</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By kinokosu3</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">空っぽな自分を今日も歌っていた</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="/js/third-party/anime.min.js"></script><script src="/js/third-party/jquery.min.js"></script><script src="/js/third-party/jquery.fancybox.min.js"></script><script src="/js/third-party/velocity.min.js"></script><script src="/js/third-party/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>

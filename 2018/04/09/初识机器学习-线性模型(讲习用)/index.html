@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="初识机器学习-线性模型(讲习用)"><meta name="keywords" content="Machine Learning"><meta name="author" content="kinokosu3"><meta name="copyright" content="kinokosu3"><title>初识机器学习-线性模型(讲习用) | kinokosu3のblog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="false"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">代价函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%E6%B1%82%E6%9C%80%E4%BC%98%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">代价函数求最优解</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars3.githubusercontent.com/u/40928807?s=400&amp;u=c69eee6e44215a1115c239128617d77ff1104a42&amp;v=4"></div><div class="author-info__name text-center">kinokosu3</div><div class="author-info__description text-center">Python、Java、Algorithm、Essays</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/kinokosu3">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">49</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">42</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">7</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">kinokosu3のblog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Main</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Aategories</a><a class="site-page" href="/about">About me</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">初识机器学习-线性模型(讲习用)</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2018-04-09</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>给定样本$\vec x$,我们用列向量表示该样本$\vec x$=$(x1,x2,x3)^T$。样本有n种特征，我们用x(i)表示样本$\vec x$的第i个特征。</p>
+<p>线性模型(linear model)的形式为:</p>
+<p>f($\vec x$) = $\vec w$·$\vec x$ + b</p>
+<p>$\vec w$是每个特征对的权重生成的权重向量</p>
+<span id="more"></span>
+<h2 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h2><p>我们来了解一个机器学习里非常重要的概念，代价函数(cost function)比如我们有一个模型y = $\theta 0$+$\theta 1$x,我们要确定$\theta 0$和$\theta 1$的值</p>
+<p>我们简单的定义几个值:</p>
+<img src="/2018/04/09/%E5%88%9D%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B(%E8%AE%B2%E4%B9%A0%E7%94%A8)/1.png" class="" title="linear_cost_function_1">
+
+<p>这是一个简单的数据集，我们要使我们的直线尽可能的靠近这些点(拟合):</p>
+<img src="/2018/04/09/%E5%88%9D%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B(%E8%AE%B2%E4%B9%A0%E7%94%A8)/2.png" class="" title="linear_cost_function_2">
+
+<p>我们如何评定？拿f(x) 和y比较，我们要使这两个的值的差异为最小，这个就是一个误差最小化问题，</p>
+<p>我们拿每一个误差相加平方，得公式(求误差均值):$\frac{1}{2m}\sum_{i=1}^m(f(x)^i - y^i)^2$</p>
+<p><code>cost function</code>和模型的对比:</p>
+<img src="/2018/04/09/%E5%88%9D%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B(%E8%AE%B2%E4%B9%A0%E7%94%A8)/3.png" class="" title="cost_function">
+
+<blockquote>
+<p>2主要用来化掉该式偏导后得出的常数</p>
+</blockquote>
+<p>上面仅仅是一个特征的代价函数，下面是两个特征的代价函数:</p>
+<img src="/2018/04/09/%E5%88%9D%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B(%E8%AE%B2%E4%B9%A0%E7%94%A8)/4.png" class="" title="double_cost_function">
+
+<h2 id="代价函数求最优解"><a href="#代价函数求最优解" class="headerlink" title="代价函数求最优解"></a>代价函数求最优解</h2><p>我们如何求到最小值，现在来讲解两种方法，<code>最小二乘法</code>和<code>梯度下降法</code>,</p>
+<p>我们回忆一下导数的意义:</p>
+<p>导数反映的是函数y=f(x)在某一点处沿x轴正方向的变化率。再强调一遍，是函数f(x)在x轴上某一点处沿着x轴正方向的变化率/变化趋势。直观地看，也就是在x轴上某一点处，如果f’(x)&gt;0，说明f(x)的函数值在x点沿x轴正方向是趋于增加的；如果f’(x)&lt;0，说明f(x)的函数值在x点沿x轴正方向是趋于减少的。</p>
+<p>其实就是函数中某点的切线斜率。</p>
+<p>偏导数也是一样，不过是对于多元函数,偏导数表示固定面上一点的切线斜率。比如我们发现ƒ在某点与xOz平面平行的切线的斜率是3，记为$\frac{\partial f}{\partial x}$ = 3</p>
+<p>最小二乘法:</p>
+<p>我们对式内的特征进行偏导，然后对偏导后的式子等于0，就可以求出每个特征权重最优解的<code>闭式解</code>。<br>这是直接求出最优解的一个方法，我们重点讲一下梯度下降(Gradient Descent):</p>
+<p>梯度下降(Gradient Descent):</p>
+<p>公式:</p>
+<img src="/2018/04/09/%E5%88%9D%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B(%E8%AE%B2%E4%B9%A0%E7%94%A8)/5.png" class="" title="Gradient_Descent_1">
+
+<p>我们反复执行这个公式，直到收敛，这个公式怎么来的呢？？$\alpha$是<code>学习速率</code>，就是我们每一次收敛时候所走的步数。</p>
+<p>一个收敛的例子:</p>
+<img src="/2018/04/09/%E5%88%9D%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B(%E8%AE%B2%E4%B9%A0%E7%94%A8)/6.png" class="" title="Gradient_Descent">
+
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">kinokosu3</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kinokosu3.github.io/2018/04/09/初识机器学习-线性模型(讲习用)/">http://kinokosu3.github.io/2018/04/09/初识机器学习-线性模型(讲习用)/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kinokosu3.github.io">kinokosu3のblog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Machine-Learning/">Machine Learning</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2018/04/14/github%E4%BA%8C%E7%BA%A7%E9%AA%8C%E8%AF%81%E7%99%BB%E5%BD%95/"><i class="fa fa-chevron-left">  </i><span>github二级验证登录</span></a></div><div class="next-post pull-right"><a href="/2018/04/09/Vue%E4%BB%8E%E9%9B%B6%E5%85%BB%E6%88%90/"><span>Vue从零养成</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By kinokosu3</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">空っぽな自分を今日も歌っていた</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="/js/third-party/anime.min.js"></script><script src="/js/third-party/jquery.min.js"></script><script src="/js/third-party/jquery.fancybox.min.js"></script><script src="/js/third-party/velocity.min.js"></script><script src="/js/third-party/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>

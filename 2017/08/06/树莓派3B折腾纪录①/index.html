@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="树莓派3B折腾纪录①"><meta name="keywords" content="树莓派"><meta name="author" content="kinokosu3"><meta name="copyright" content="kinokosu3"><title>树莓派3B折腾纪录① | kinokosu3のblog</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="false"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E8%8E%93%E6%B4%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">树莓派系统的安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%80%89%E6%8B%A9"><span class="toc-number">1.1.</span> <span class="toc-text">系统选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">安装方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#NOOBS%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.1.</span> <span class="toc-text">NOOBS安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RASPBIAN%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.2.</span> <span class="toc-text">RASPBIAN安装</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E6%A0%91%E8%8E%93%E6%B4%BE"><span class="toc-number">1.3.</span> <span class="toc-text">登录树莓派</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ssh%E7%99%BB%E5%BD%95"><span class="toc-number">1.3.1.</span> <span class="toc-text">ssh登录</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://avatars3.githubusercontent.com/u/40928807?s=400&amp;u=c69eee6e44215a1115c239128617d77ff1104a42&amp;v=4"></div><div class="author-info__name text-center">kinokosu3</div><div class="author-info__description text-center">Python、Java、Algorithm、Essays</div><div class="follow-button"><a target="_blank" rel="noopener" href="https://github.com/kinokosu3">Follow Me</a></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">49</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">42</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">7</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">kinokosu3のblog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Main</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Aategories</a><a class="site-page" href="/about">About me</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">树莓派3B折腾纪录①</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2017-08-06</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%A4%87%E5%BF%98%E5%BD%95/">备忘录</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="树莓派系统的安装"><a href="#树莓派系统的安装" class="headerlink" title="树莓派系统的安装"></a>树莓派系统的安装</h2><hr>
+<h3 id="系统选择"><a href="#系统选择" class="headerlink" title="系统选择"></a>系统选择</h3><p>我的树莓派3B是在某宝上买的，买的是没有带系统的版本（没有买带有TF卡套餐的），就需要自己装一个系统，折腾树莓派以后自己装系统应该会成为常态的</p>
+<p>官网的下载地址: <a target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/">地址</a></p>
+<p><img src="http://ouonrxq3b.bkt.clouddn.com/1.png" alt="noobs"></p>
+<span id="more"></span>
+
+<p>NOOBS是官方提供的安装器，左边的完整版自带离线安装包RASPBIAN，可以通过NOOBS安装器安装，右边的lite版是线上安装模式，需要通过从网上下载镜像来安装。NOOBS适合不习惯命令行的小白</p>
+<p><img src="http://ouonrxq3b.bkt.clouddn.com/2.png" alt="noobs"></p>
+<p>RASPBIAN是刷入版，对于NOOBS的区别大概就是一个完整的镜像烧入卡里面，左边是完整的带有图形环境的完整桌面版，带有各种软件，右边的lite版是阉割了图形环境和一些软件的命令行版（一般不用图形界面的就用lite版）</p>
+<p><img src="http://ouonrxq3b.bkt.clouddn.com/3.png" alt="noobs"></p>
+<h3 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h3><p>得到一张TF卡，首先要把它格式化，使用SDFormatter格式化</p>
+<p><img src="http://ouonrxq3b.bkt.clouddn.com/4.png" alt="clean"></p>
+<h4 id="NOOBS安装"><a href="#NOOBS安装" class="headerlink" title="NOOBS安装"></a>NOOBS安装</h4><p>把下载后的压缩包解压出来的文件全部复制进刚刚格式化成FAT32的TF卡里就可以了</p>
+<h4 id="RASPBIAN安装"><a href="#RASPBIAN安装" class="headerlink" title="RASPBIAN安装"></a>RASPBIAN安装</h4><p>使用win32diskimager烧入镜像</p>
+<p><img src="http://ouonrxq3b.bkt.clouddn.com/5.png" alt="noobs"></p>
+<hr>
+<h3 id="登录树莓派"><a href="#登录树莓派" class="headerlink" title="登录树莓派"></a>登录树莓派</h3><p>图形化界面没有可以说的，跟平常开电脑是一样的，插上HDMI线就可以了</p>
+<p>接下来介绍不用显示器登录树莓派的方法</p>
+<h4 id="ssh登录"><a href="#ssh登录" class="headerlink" title="ssh登录"></a>ssh登录</h4><p>无论是NOOBS安装的系统，还是烧入的系统，在TF卡根目录建一个ssh的空文件（不要有任何后缀）</p>
+<p>因为不知道什么时候的事，官方的系统默认关闭了ssh功能，我们需要这样开启</p>
+<p>把树莓派的电源插上之后，等大概20秒的时间，这时候我们不知道树莓派的ip，我们可以进路由器后台查看，或者使用<br>扫描器扫描一下局域网的网络设备，还有一个方法就是用网线插上笔记本，然后共享网络，进入CMD使用命令arp -a查看树莓派在当前路由的地址，如果你不对路由器断电，这个地址会绑定MAC地址不会变的。</p>
+<p>接下来我们可以ssh登录了，在windows环境下可以使用xshell或者puttyport进行ssh登录</p>
+<p>我使用mac环境（liunx同理）</p>
+<p>在终端输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh pi@192.168.0.106</span></span><br></pre></td></tr></table></figure>
+
+<p>192.168.0.106是我树莓派在路由器的地址</p>
+<p>然后会有交互显示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">The authenticity of host &#x27;192.168.0.106 (192.168.0.106)&#x27; can&#x27;t be established.</span><br><span class="line">ECDSA key fingerprint is SHA256:7gNwDQEdPve2Cjk6eDqQhxvi5X/ZqDRSVKpv38T7Gr8.</span><br><span class="line">Are you sure you want to continue connecting (yes/no)? yes</span><br></pre></td></tr></table></figure>
+
+<p>输入yes就好了</p>
+<blockquote>
+<p>如果你重新刷了系统，然后树莓派的地址和之前的一样，就会触发Host key verification failed错误,mac环境下是删除.shh里面know_hosts文件的ip密钥纪录</p>
+</blockquote>
+<p>之后会出现输入密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pi@192.168.0.106&#x27;s password:</span><br></pre></td></tr></table></figure>
+
+<p>默认密码是raspberry</p>
+<p>到此，我们就使用ssh登录上了树莓派</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">kinokosu3</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kinokosu3.github.io/2017/08/06/树莓派3B折腾纪录①/">http://kinokosu3.github.io/2017/08/06/树莓派3B折腾纪录①/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kinokosu3.github.io">kinokosu3のblog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/">树莓派</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2017/08/07/%E6%A0%91%E8%8E%93%E6%B4%BE3B%E6%8A%98%E8%85%BE%E7%BA%AA%E5%BD%95%E2%91%A1/"><i class="fa fa-chevron-left">  </i><span>树莓派3B折腾纪录②</span></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://raw.githubusercontent.com/kinokosu3/img_bed/master/img/1.png)"><div class="layout" id="footer"><div class="copyright">&copy;2017 - 2021 By kinokosu3</div><div class="framework-info"><span>驱动 - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">空っぽな自分を今日も歌っていた</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="/js/third-party/anime.min.js"></script><script src="/js/third-party/jquery.min.js"></script><script src="/js/third-party/jquery.fancybox.min.js"></script><script src="/js/third-party/velocity.min.js"></script><script src="/js/third-party/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
