@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>分布式数据系统 on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F/</link>
+        <description>Recent content in 分布式数据系统 on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Sun, 24 Dec 2023 13:38:43 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>DDIA系列1️⃣--复制理论</title>
+        <link>https://kinokosu3.github.io/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/</link>
+        <pubDate>Sun, 24 Dec 2023 13:38:43 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/</guid>
+        <description>&lt;img src="https://kinokosu3.github.io/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/cover.png" alt="Featured image of post DDIA系列1️⃣--复制理论" /&gt;&lt;h2 id=&#34;有状态的水平扩展&#34;&gt;有状态的水平扩展&lt;/h2&gt;
+&lt;p&gt;现实中负载增强后需要更强的处理能力，一般来说会分为两种扩展，水平扩展和垂直扩展。垂直扩展通常就是往一台机器上加更多的内存和CPU核心，成本较高，容错能力较差。水平扩展则是一台机器处理任务变成多台机器一起处理任务，相互协调通信全部运行在以太网上。无数据状态的水平扩展比较简单，无论是添加还是删除都不会给应用程序造成影响，而对于有数据状态的水平扩展(例如数据库)，通常来说会有两种方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;复制&lt;/li&gt;
+&lt;li&gt;分区&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;复制&#34;&gt;复制&lt;/h2&gt;
+&lt;p&gt;复制通常为了解决几个问题：贴近用户，降低访问延迟、高可用、读吞吐量。
+复制中的所有挑战都是为了解决持续更改中的复制问题。
+其中流行的三种复制方法有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;主从复制&lt;/li&gt;
+&lt;li&gt;多主节点复制&lt;/li&gt;
+&lt;li&gt;无主节点复制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;主从复制&#34;&gt;主从复制&lt;/h3&gt;
+&lt;p&gt;每个保存数据库完整数据集的节点称之为副本。复制设计中分为两种，一种是同步复制一种是异步复制。&lt;/p&gt;
+&lt;p&gt;同步复制好处是，从节点可以确保完成和主节点的更新同步。坏处是每次更改都需要等待从节点确认，最差情况会阻塞当前操作。&lt;/p&gt;
+&lt;p&gt;其中有一种设计是半同步，只有一个节点是同步复制的，如果同步的从节点变得不可用，就可以提升异步的从节点为同步。这样可以确保至少有两个节点拥有最新的副本。&lt;/p&gt;
+&lt;p&gt;如果是全异步模式，很有可能会在主节点还没来及的发送写请求却宕机，但是客户端已经确认了。这样无法保证数据的持久化。&lt;/p&gt;
+&lt;p&gt;如果加入了新的从节点，这时候主节点通常还是会对外保持服务，源源不断产生写请求。通常来说数据库系统会对数据产生一个快照，避免锁住整个数据库(不可接受)，然后拷贝快照到从节点。接下来快照时间后所有产生数据更改日志也会发给从节点，这样被称为&lt;code&gt;追赶&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;接下来讨论最关键的高可用(宕机)环节。&lt;/p&gt;
+&lt;h4 id=&#34;节点失效&#34;&gt;节点失效&lt;/h4&gt;
+&lt;p&gt;从节点失效：追赶式恢复，根据副本的复制日志，可以知道故障前最后处理的事务，然后去主节点拿到这个事务后所有的数据变更。&lt;/p&gt;
+&lt;p&gt;主节点失效：节点切换。分为三个步骤，确认主节点失效，选举新的主节点，重新配置系统生效主节点。最后一步中客户端需要将请求发送给新的主节点，如果旧的主节点重新上线，可能还自认为是主节点（脑裂），系统需要确保旧的主节点降级为从节点。
+如果是异步复制，就有可能导致数据丢失，如果失效前的数据没有被复制出去，重新上线后可能会给其他从节点发送同步请求，这样的话只能丢弃旧主节点上的数据。
+如果使用丢失数据的方式来解决数据复制不同步的问题，首先会破坏数据持久化，其次，如果依赖了Redis缓存等外部组件，可能会出现数据不一致，导致数据错误或泄漏。&lt;/p&gt;
+&lt;h4 id=&#34;复制日志&#34;&gt;复制日志&lt;/h4&gt;
+&lt;p&gt;基于语句的复制，所有操作日志发给从节点，但是有一些问题，例如NOW获取当前时间，在从节点就会产生不同的值。或者是使用了自增列，就必须顺序执行。
+基于WAL预写日志的复制，所有对数据库写入的字节序列都写入日志，然后发送给从节点重放。但是这种数据过于底层，必须与存储引擎紧密结合才能生效。
+基于行的逻辑日志的复制，逻辑日志指一系列记录描述对行级别的写请求，例如行插入、行删除、行更新。MySQL的binlog就是其中一种。&lt;/p&gt;
+&lt;h4 id=&#34;复制滞后最终一致性&#34;&gt;复制滞后(最终一致性)&lt;/h4&gt;
+&lt;p&gt;完全同步复制的系统在现实中非常不可靠，如果其中只要一个节点发生故障整个系统就不能写入了。所以说只能用异步复制，但是使用异步复制就会导致客户端访问从节点会读到过期的消息。
+接下来讨论复制滞后的问题与一些解决思路。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

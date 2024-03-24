@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>React on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/react/</link>
+        <description>Recent content in React on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Sun, 17 Sep 2017 16:24:19 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/react/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>React学习纪录</title>
+        <link>https://kinokosu3.github.io/p/react%E5%AD%A6%E4%B9%A0%E7%BA%AA%E5%BD%95/</link>
+        <pubDate>Sun, 17 Sep 2017 16:24:19 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/react%E5%AD%A6%E4%B9%A0%E7%BA%AA%E5%BD%95/</guid>
+        <description>&lt;h2 id=&#34;开始react的世界&#34;&gt;开始React的世界&lt;/h2&gt;
+&lt;h3 id=&#34;配置react&#34;&gt;配置React&lt;/h3&gt;
+&lt;p&gt;首先我们要安装&lt;code&gt;Node.js&lt;/code&gt;环境，然后有&lt;code&gt;npm&lt;/code&gt;安装环境，然后我们在命令行里执行&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ npm install create-react-app
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然后我们就会有一个&lt;code&gt;React&lt;/code&gt;脚手架，可以迅速构建&lt;code&gt;React&lt;/code&gt;开发环境&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ npm install -g create-react-app
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ create-react-app my-app
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; myapp/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ npm start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;因为&lt;code&gt;npm&lt;/code&gt;在国内很慢。。推荐在第一次创建项目的时候挂个科学上网什么的&lt;/p&gt;
+&lt;p&gt;然后我们会看到我们的第一个demo&lt;/p&gt;
+&lt;h3 id=&#34;material-ui-使用教程&#34;&gt;Material-UI 使用教程&lt;/h3&gt;
+&lt;p&gt;我们在当前项目的&lt;code&gt;package.json&lt;/code&gt;中修改：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;dependencies&amp;#34;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;material-ui&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;^0.19.1&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;react&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;^15.6.1&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;react-dom&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;^15.6.1&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;react-scripts&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;1.0.13&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;将&lt;code&gt;material-ui&lt;/code&gt;添加进来,然后执行&lt;code&gt;npm update --scripts-prepend-node-path=auto&lt;/code&gt;,将&lt;code&gt;material-ui&lt;/code&gt;包添加进当前脚手架&lt;/p&gt;
+&lt;p&gt;然后我们开始构建第一个demo。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

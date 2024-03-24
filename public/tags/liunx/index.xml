@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Liunx on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/liunx/</link>
+        <description>Recent content in Liunx on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Sun, 11 Mar 2018 11:37:21 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/liunx/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>liunx全养成①</title>
+        <link>https://kinokosu3.github.io/p/liunx%E5%85%A8%E5%85%BB%E6%88%90/</link>
+        <pubDate>Sun, 11 Mar 2018 11:37:21 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/liunx%E5%85%A8%E5%85%BB%E6%88%90/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;最近小组那边找了一大批新人，看起来都是大佬的样子(笑，而且我也要去上课之类的，所有只好重新开一台阿里云的服务器，上个学期那台已经被阿里云释放了，但是我依旧做好了备份，所以应该没有数据丢失(上个学期爬的100M豆瓣数据说丢就丢毫不含糊)，既然重新来，就做一个记录，当一个wiki使用。该文会长期更新。。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;服务器前期工作&#34;&gt;服务器前期工作&lt;/h2&gt;
+&lt;p&gt;因为安全问题和方便的问题，安全登录我们先做好准备，首先做好&lt;code&gt;ssh&lt;/code&gt;的登录准备。&lt;/p&gt;
+&lt;h3 id=&#34;生成ssh-key实现无密码登录&#34;&gt;生成ssh-key实现无密码登录&lt;/h3&gt;
+&lt;p&gt;无论是本地还是远程，生成&lt;code&gt;ssh&lt;/code&gt;秘钥都是一句命令:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ssh-keygen -t rsa -C &lt;span class=&#34;s2&#34;&gt;&amp;#34;your email&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;实现免密码登录只需要把本地&lt;code&gt;.ssh/id_rsa.pub&lt;/code&gt;内的秘钥放在远程服务器的&lt;code&gt;.ssh/authorized_keys&lt;/code&gt;内即可实现无密码登录。&lt;/p&gt;
+&lt;h3 id=&#34;ssh禁止密码登录&#34;&gt;ssh禁止密码登录&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vim /etc/ssh/sshd_config
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;禁用密码验证
+PasswordAuthentication no  //修改为no  133行（最后一行）&lt;/p&gt;
+&lt;h2 id=&#34;更新安装列表&#34;&gt;更新安装列表&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;apt-get update&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;布置python环境&#34;&gt;布置python环境&lt;/h2&gt;
+&lt;p&gt;阿里云的Ubuntu系统自带两种稳定版&lt;code&gt;python&lt;/code&gt;，一种是&lt;code&gt;Python 2.7.12&lt;/code&gt;，一种是&lt;code&gt;Python 3.5.2&lt;/code&gt;，但是我都不想用，我就是想用又新又稳定的，比如&lt;code&gt;Python-3.6.4&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;我们在python官网上下载编译包&lt;code&gt;wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tgz&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;然后解压&lt;code&gt;tar -zxvf Python-3.6.4.tgz&lt;/code&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我们首先先去编译安装一个zlib，不然安装pip和setuptool会出错
+我们还需要安装openssl,libssl-dev, libsqlite3-dev
+然后修改python-3.6.4/Modules/Setup，修改&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Socket module helper for socket(2)  &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;_socket socketmodule.c 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Socket module helper for SSL support; you must comment out the other  &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# socket line above, and possibly edit the SSL variable:  &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#SSL=/usr/local/ssl  &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;_ssl _ssl.c &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-DUSE_SSL -I&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;SSL&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;/include -I&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;SSL&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;/include/openssl &lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-L&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;SSL&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;/lib -lssl -lcrypto 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;！！！！！！！！！！！！！一定要完成上面的注意事项再进行编译安装！！！！！！！！！！！！！！！&lt;/p&gt;
+&lt;p&gt;我们进入刚刚解压出来的文件夹里，执行3连:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./configure
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;make
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo make install
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;python虚拟环境virtualenv&#34;&gt;python虚拟环境virtualenv&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;pip3 install virtualenv&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;查看&lt;code&gt;Python3.6&lt;/code&gt;安装路径:&lt;code&gt;which pyhton3.6&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;创建虚拟环境: &lt;code&gt;virtualenv -p /usr/bin/python3 py3env&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;进入虚拟环境: &lt;code&gt;source py3env/bin/activate&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;退出虚拟环境： &lt;code&gt;deactivate&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;布置ipython-notebook&#34;&gt;布置ipython-notebook&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;pip install ipython&lt;/code&gt;、&lt;code&gt;pip install jupyter&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;启动时候注意端口和地址。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

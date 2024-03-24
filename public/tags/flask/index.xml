@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Flask on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/flask/</link>
+        <description>Recent content in Flask on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Wed, 11 Oct 2017 22:39:05 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/flask/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>flask&#43;uwsgi&#43;nginx的部署</title>
+        <link>https://kinokosu3.github.io/p/flask-uwsgi-nginx%E7%9A%84%E9%83%A8%E7%BD%B2/</link>
+        <pubDate>Wed, 11 Oct 2017 22:39:05 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/flask-uwsgi-nginx%E7%9A%84%E9%83%A8%E7%BD%B2/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;哇，之前写一个&lt;code&gt;flask&lt;/code&gt;项目的时候，一直打算部署，看了不少的教程，最后选择了&lt;code&gt;flask&lt;/code&gt;+&lt;code&gt;uwsgi&lt;/code&gt;+&lt;code&gt;nginx&lt;/code&gt;的搭配，然后在Ubuntu server里尝试上线，但是就是不行，一直报错502，一直找不到问题所在，后来在家里的一台烂liunx笔记本尝试上线（一样是Ubuntu），这已经距离我的&lt;code&gt;flask&lt;/code&gt;项目写好过了几个月了，然后一次就成功了，一脸蒙蔽，这个教程并没有太多的对于&lt;code&gt;uwsgi&lt;/code&gt;和&lt;code&gt;nginx&lt;/code&gt;的性能优化之类的，仅仅保留了最基本的配置。不会对配置做过多的解释，如果想知道配置文件的解释，可以自己谷歌或者百度查看&lt;code&gt;uwsgi&lt;/code&gt;和&lt;code&gt;nginx&lt;/code&gt;的配置文件解释。仅仅做一个备忘录。&lt;/p&gt;
+&lt;h2 id=&#34;配置&#34;&gt;配置&lt;/h2&gt;
+&lt;h3 id=&#34;nginx配置&#34;&gt;nginx配置&lt;/h3&gt;
+&lt;p&gt;nginx配置文件路径在&lt;code&gt;/etc/nginx&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;nginx配置文件如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;server&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;err&#34;&gt;listen&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;80;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;err&#34;&gt;server_name&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;localhost;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;err&#34;&gt;charset&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;utf-8;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;err&#34;&gt;keepalive_timeout&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;0;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;err&#34;&gt;client_max_body_size&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;75M;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;err&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;err&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;uwsgi_params;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;err&#34;&gt;uwsgi_pass&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;unix:/home/su/upload_file-master/demo.sock;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;server_name&lt;/code&gt;为服务器地址，这里因为是本地上线，所以填了本地的地址，这里一个很主要的和&lt;code&gt;uwsgi&lt;/code&gt;交互的地方在与&lt;code&gt;uwsgi_pass&lt;/code&gt;这个配置选项，链接&lt;code&gt;uwsgi&lt;/code&gt;的socket地址，生成这个socket的路径会在&lt;code&gt;uwsgi&lt;/code&gt;的配置文件里配置。可以看下面的&lt;code&gt;uwsgi&lt;/code&gt;配置。&lt;/p&gt;
+&lt;p&gt;这个文件的名字是&lt;code&gt;nginx.conf&lt;/code&gt;，尽量不要修改，我们将这个文件放在&lt;code&gt;/etc/nginx/site-enabled/&lt;/code&gt;里，然后修改一下&lt;code&gt;/etc/nginx/nginx.conf&lt;/code&gt;里的&lt;code&gt;include /etc/nginx/sites-enabled/*.conf&lt;/code&gt;这一项。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ouonrxq3b.bkt.clouddn.com/flask-nginx-uwsgi/nginx-conf.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;nginx.conf&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;然后我们检查一下&lt;code&gt;nginx&lt;/code&gt;的配置文件正确性，输入命令&lt;code&gt;sudo nginx -t&lt;/code&gt;，如果显示:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://ouonrxq3b.bkt.clouddn.com/flask-nginx-uwsgi/nginx-test.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;nginx-config&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;就表示&lt;code&gt;nginx&lt;/code&gt;配置文件配置正确&lt;/p&gt;
+&lt;h3 id=&#34;uwsgi-配置&#34;&gt;uwsgi 配置&lt;/h3&gt;
+&lt;p&gt;建议将uwsgi配置文件放在项目根目录下，后缀为&lt;code&gt;.ini&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;uwsgi配置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;uwsgi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;processes&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;wsgi-file&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/home/su/upload_file-master/demo.py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;socket&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;/home/su/upload_file-master/demo.sock&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;chmod-socket&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;666&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;demo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;callable&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;app&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;wsgi.file&lt;/code&gt;文件为&lt;code&gt;flask&lt;/code&gt;的服务器入口，比如哪个文件有像这样的&lt;code&gt;app.run(debug=True, port=9090, host=&amp;quot;0.0.0.0&amp;quot;)&lt;/code&gt;（其实就是服务器启动），&lt;code&gt;socket&lt;/code&gt;的保存路径就是&lt;code&gt;nginx&lt;/code&gt;配置文件中&lt;code&gt;uwsgi_pass&lt;/code&gt;的路径，这个路径一定要对。&lt;code&gt;chomd-socket&lt;/code&gt;把&lt;code&gt;socket&lt;/code&gt;的权限改写成所有人可写可读。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;callable选项为flask中的&lt;code&gt;app = Flask(__name__)&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

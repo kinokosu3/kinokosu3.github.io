@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="有状态的水平扩展 现实中负载增强后需要更强的处理能力，一般来说会分为两种扩展，水平扩展和垂直扩展。垂直扩展通常就是往一台机器上加更多的内存和CPU核心，成本较高，容错能力较差。水平扩展则是一台机器处理任务变成多台机器一起处理任务，相互协调通信全部运行在以太网上。无数据状态的水平扩展比较简单，无论是添加还是删除都不会给应用程序造成影响，而对于有数据状态的水平扩展(例如数据库)，通常来说会有两种方式： 复制 分区 复制 复制通常为了解决几个问题：贴近用户，降低访问延迟、高可用、读吞吐量。 复制中的所有挑战都是为了解决持续更改中的复制问题。 其中流行的三种复制方法有： 主从复制 多主节点复制 无主节点复制 主从复制 每个保存数据库完整数据集的节点称之为副本。复制设计中分为两种，一种是同步复制一种是异步复制。 同步复制好处是，从节点可以确保完成和主节点的更新同步。坏处是每次更改都需要等待从节点确认，最差情况会阻塞当前操作。 其中有一种设计是半同步，只有一个节点是同步复制的，如果同步的从节点变得不可用，就可以提升异步的从节点为同步。这样可以确保至少有两个节点拥有最新的副本。 如果是全异步模式，很有可能会在主节点还没来及的发送写请求却宕机，但是客户端已经确认了。这样无法保证数据的持久化。 如果加入了新的从节点，这时候主节点通常还是会对外保持服务，源源不断产生写请求。通常来说数据库系统会对数据产生一个快照，避免锁住整个数据库(不可接受)，然后拷贝快照到从节点。接下来快照时间后所有产生数据更改日志也会发给从节点，这样被称为追赶。 接下来讨论最关键的高可用(宕机)环节。 节点失效 从节点失效：追赶式恢复，根据副本的复制日志，可以知道故障前最后处理的事务，然后去主节点拿到这个事务后所有的数据变更。 主节点失效：节点切换。分为三个步骤，确认主节点失效，选举新的主节点，重新配置系统生效主节点。最后一步中客户端需要将请求发送给新的主节点，如果旧的主节点重新上线，可能还自认为是主节点（脑裂），系统需要确保旧的主节点降级为从节点。 如果是异步复制，就有可能导致数据丢失，如果失效前的数据没有被复制出去，重新上线后可能会给其他从节点发送同步请求，这样的话只能丢弃旧主节点上的数据。 如果使用丢失数据的方式来解决数据复制不同步的问题，首先会破坏数据持久化，其次，如果依赖了Redis缓存等外部组件，可能会出现数据不一致，导致数据错误或泄漏。 复制日志 基于语句的复制，所有操作日志发给从节点，但是有一些问题，例如NOW获取当前时间，在从节点就会产生不同的值。或者是使用了自增列，就必须顺序执行。 基于WAL预写日志的复制，所有对数据库写入的字节序列都写入日志，然后发送给从节点重放。但是这种数据过于底层，必须与存储引擎紧密结合才能生效。 基于行的逻辑日志的复制，逻辑日志指一系列记录描述对行级别的写请求，例如行插入、行删除、行更新。MySQL的binlog就是其中一种。 复制滞后(最终一致性) 完全同步复制的系统在现实中非常不可靠，如果其中只要一个节点发生故障整个系统就不能写入了。所以说只能用异步复制，但是使用异步复制就会导致客户端访问从节点会读到过期的消息。 接下来讨论复制滞后的问题与一些解决思路。">
+<title>DDIA系列1️⃣--复制理论</title>
+
+<link rel='canonical' href='https://kinokosu3.github.io/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/'>
+
+<link rel="stylesheet" href="/scss/style.min.a7a053668ceebf8b05187348b96ad7952720fc1f8071cb2e56e51480f0500c7e.css"><meta property='og:title' content="DDIA系列1️⃣--复制理论">
+<meta property='og:description' content="有状态的水平扩展 现实中负载增强后需要更强的处理能力，一般来说会分为两种扩展，水平扩展和垂直扩展。垂直扩展通常就是往一台机器上加更多的内存和CPU核心，成本较高，容错能力较差。水平扩展则是一台机器处理任务变成多台机器一起处理任务，相互协调通信全部运行在以太网上。无数据状态的水平扩展比较简单，无论是添加还是删除都不会给应用程序造成影响，而对于有数据状态的水平扩展(例如数据库)，通常来说会有两种方式： 复制 分区 复制 复制通常为了解决几个问题：贴近用户，降低访问延迟、高可用、读吞吐量。 复制中的所有挑战都是为了解决持续更改中的复制问题。 其中流行的三种复制方法有： 主从复制 多主节点复制 无主节点复制 主从复制 每个保存数据库完整数据集的节点称之为副本。复制设计中分为两种，一种是同步复制一种是异步复制。 同步复制好处是，从节点可以确保完成和主节点的更新同步。坏处是每次更改都需要等待从节点确认，最差情况会阻塞当前操作。 其中有一种设计是半同步，只有一个节点是同步复制的，如果同步的从节点变得不可用，就可以提升异步的从节点为同步。这样可以确保至少有两个节点拥有最新的副本。 如果是全异步模式，很有可能会在主节点还没来及的发送写请求却宕机，但是客户端已经确认了。这样无法保证数据的持久化。 如果加入了新的从节点，这时候主节点通常还是会对外保持服务，源源不断产生写请求。通常来说数据库系统会对数据产生一个快照，避免锁住整个数据库(不可接受)，然后拷贝快照到从节点。接下来快照时间后所有产生数据更改日志也会发给从节点，这样被称为追赶。 接下来讨论最关键的高可用(宕机)环节。 节点失效 从节点失效：追赶式恢复，根据副本的复制日志，可以知道故障前最后处理的事务，然后去主节点拿到这个事务后所有的数据变更。 主节点失效：节点切换。分为三个步骤，确认主节点失效，选举新的主节点，重新配置系统生效主节点。最后一步中客户端需要将请求发送给新的主节点，如果旧的主节点重新上线，可能还自认为是主节点（脑裂），系统需要确保旧的主节点降级为从节点。 如果是异步复制，就有可能导致数据丢失，如果失效前的数据没有被复制出去，重新上线后可能会给其他从节点发送同步请求，这样的话只能丢弃旧主节点上的数据。 如果使用丢失数据的方式来解决数据复制不同步的问题，首先会破坏数据持久化，其次，如果依赖了Redis缓存等外部组件，可能会出现数据不一致，导致数据错误或泄漏。 复制日志 基于语句的复制，所有操作日志发给从节点，但是有一些问题，例如NOW获取当前时间，在从节点就会产生不同的值。或者是使用了自增列，就必须顺序执行。 基于WAL预写日志的复制，所有对数据库写入的字节序列都写入日志，然后发送给从节点重放。但是这种数据过于底层，必须与存储引擎紧密结合才能生效。 基于行的逻辑日志的复制，逻辑日志指一系列记录描述对行级别的写请求，例如行插入、行删除、行更新。MySQL的binlog就是其中一种。 复制滞后(最终一致性) 完全同步复制的系统在现实中非常不可靠，如果其中只要一个节点发生故障整个系统就不能写入了。所以说只能用异步复制，但是使用异步复制就会导致客户端访问从节点会读到过期的消息。 接下来讨论复制滞后的问题与一些解决思路。">
+<meta property='og:url' content='https://kinokosu3.github.io/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/'>
+<meta property='og:site_name' content='kinokosu3のblog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='分布式数据系统' /><meta property='article:published_time' content='2023-12-24T13:38:43&#43;00:00'/><meta property='article:modified_time' content='2023-12-24T13:38:43&#43;00:00'/><meta property='og:image' content='https://kinokosu3.github.io/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/cover.png' />
+<meta name="twitter:title" content="DDIA系列1️⃣--复制理论">
+<meta name="twitter:description" content="有状态的水平扩展 现实中负载增强后需要更强的处理能力，一般来说会分为两种扩展，水平扩展和垂直扩展。垂直扩展通常就是往一台机器上加更多的内存和CPU核心，成本较高，容错能力较差。水平扩展则是一台机器处理任务变成多台机器一起处理任务，相互协调通信全部运行在以太网上。无数据状态的水平扩展比较简单，无论是添加还是删除都不会给应用程序造成影响，而对于有数据状态的水平扩展(例如数据库)，通常来说会有两种方式： 复制 分区 复制 复制通常为了解决几个问题：贴近用户，降低访问延迟、高可用、读吞吐量。 复制中的所有挑战都是为了解决持续更改中的复制问题。 其中流行的三种复制方法有： 主从复制 多主节点复制 无主节点复制 主从复制 每个保存数据库完整数据集的节点称之为副本。复制设计中分为两种，一种是同步复制一种是异步复制。 同步复制好处是，从节点可以确保完成和主节点的更新同步。坏处是每次更改都需要等待从节点确认，最差情况会阻塞当前操作。 其中有一种设计是半同步，只有一个节点是同步复制的，如果同步的从节点变得不可用，就可以提升异步的从节点为同步。这样可以确保至少有两个节点拥有最新的副本。 如果是全异步模式，很有可能会在主节点还没来及的发送写请求却宕机，但是客户端已经确认了。这样无法保证数据的持久化。 如果加入了新的从节点，这时候主节点通常还是会对外保持服务，源源不断产生写请求。通常来说数据库系统会对数据产生一个快照，避免锁住整个数据库(不可接受)，然后拷贝快照到从节点。接下来快照时间后所有产生数据更改日志也会发给从节点，这样被称为追赶。 接下来讨论最关键的高可用(宕机)环节。 节点失效 从节点失效：追赶式恢复，根据副本的复制日志，可以知道故障前最后处理的事务，然后去主节点拿到这个事务后所有的数据变更。 主节点失效：节点切换。分为三个步骤，确认主节点失效，选举新的主节点，重新配置系统生效主节点。最后一步中客户端需要将请求发送给新的主节点，如果旧的主节点重新上线，可能还自认为是主节点（脑裂），系统需要确保旧的主节点降级为从节点。 如果是异步复制，就有可能导致数据丢失，如果失效前的数据没有被复制出去，重新上线后可能会给其他从节点发送同步请求，这样的话只能丢弃旧主节点上的数据。 如果使用丢失数据的方式来解决数据复制不同步的问题，首先会破坏数据持久化，其次，如果依赖了Redis缓存等外部组件，可能会出现数据不一致，导致数据错误或泄漏。 复制日志 基于语句的复制，所有操作日志发给从节点，但是有一些问题，例如NOW获取当前时间，在从节点就会产生不同的值。或者是使用了自增列，就必须顺序执行。 基于WAL预写日志的复制，所有对数据库写入的字节序列都写入日志，然后发送给从节点重放。但是这种数据过于底层，必须与存储引擎紧密结合才能生效。 基于行的逻辑日志的复制，逻辑日志指一系列记录描述对行级别的写请求，例如行插入、行删除、行更新。MySQL的binlog就是其中一种。 复制滞后(最终一致性) 完全同步复制的系统在现实中非常不可靠，如果其中只要一个节点发生故障整个系统就不能写入了。所以说只能用异步复制，但是使用异步复制就会导致客户端访问从节点会读到过期的消息。 接下来讨论复制滞后的问题与一些解决思路。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://kinokosu3.github.io/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/cover.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/40928807_hu2315d04c5fb87fec33fa788c664ba42a_29261_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">kinokosu3のblog</a></h1>
+            <h2 class="site-description">Golang、Kubernetes、Cloud Native、Essays</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/kinokosu3'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#有状态的水平扩展">有状态的水平扩展</a></li>
+    <li><a href="#复制">复制</a>
+      <ol>
+        <li><a href="#主从复制">主从复制</a>
+          <ol>
+            <li><a href="#节点失效">节点失效</a></li>
+            <li><a href="#复制日志">复制日志</a></li>
+            <li><a href="#复制滞后最终一致性">复制滞后(最终一致性)</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/">
+                <img src="/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/cover_hu9cf6b63927dd4e5f6bed850b07c5d714_402406_800x0_resize_box_3.png"
+                        srcset="/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/cover_hu9cf6b63927dd4e5f6bed850b07c5d714_402406_800x0_resize_box_3.png 800w, /p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/cover_hu9cf6b63927dd4e5f6bed850b07c5d714_402406_1600x0_resize_box_3.png 1600w"
+                        width="800" 
+                        height="1050" 
+                        loading="lazy"
+                        alt="Featured image of post DDIA系列1️⃣--复制理论" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/ddia%E7%B3%BB%E5%88%971%EF%B8%8F%E2%83%A3--%E5%A4%8D%E5%88%B6%E7%90%86%E8%AE%BA/">DDIA系列1️⃣--复制理论</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 24, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="有状态的水平扩展">有状态的水平扩展</h2>
+<p>现实中负载增强后需要更强的处理能力，一般来说会分为两种扩展，水平扩展和垂直扩展。垂直扩展通常就是往一台机器上加更多的内存和CPU核心，成本较高，容错能力较差。水平扩展则是一台机器处理任务变成多台机器一起处理任务，相互协调通信全部运行在以太网上。无数据状态的水平扩展比较简单，无论是添加还是删除都不会给应用程序造成影响，而对于有数据状态的水平扩展(例如数据库)，通常来说会有两种方式：</p>
+<ul>
+<li>复制</li>
+<li>分区</li>
+</ul>
+<h2 id="复制">复制</h2>
+<p>复制通常为了解决几个问题：贴近用户，降低访问延迟、高可用、读吞吐量。
+复制中的所有挑战都是为了解决持续更改中的复制问题。
+其中流行的三种复制方法有：</p>
+<ul>
+<li>主从复制</li>
+<li>多主节点复制</li>
+<li>无主节点复制</li>
+</ul>
+<h3 id="主从复制">主从复制</h3>
+<p>每个保存数据库完整数据集的节点称之为副本。复制设计中分为两种，一种是同步复制一种是异步复制。</p>
+<p>同步复制好处是，从节点可以确保完成和主节点的更新同步。坏处是每次更改都需要等待从节点确认，最差情况会阻塞当前操作。</p>
+<p>其中有一种设计是半同步，只有一个节点是同步复制的，如果同步的从节点变得不可用，就可以提升异步的从节点为同步。这样可以确保至少有两个节点拥有最新的副本。</p>
+<p>如果是全异步模式，很有可能会在主节点还没来及的发送写请求却宕机，但是客户端已经确认了。这样无法保证数据的持久化。</p>
+<p>如果加入了新的从节点，这时候主节点通常还是会对外保持服务，源源不断产生写请求。通常来说数据库系统会对数据产生一个快照，避免锁住整个数据库(不可接受)，然后拷贝快照到从节点。接下来快照时间后所有产生数据更改日志也会发给从节点，这样被称为<code>追赶</code>。</p>
+<p>接下来讨论最关键的高可用(宕机)环节。</p>
+<h4 id="节点失效">节点失效</h4>
+<p>从节点失效：追赶式恢复，根据副本的复制日志，可以知道故障前最后处理的事务，然后去主节点拿到这个事务后所有的数据变更。</p>
+<p>主节点失效：节点切换。分为三个步骤，确认主节点失效，选举新的主节点，重新配置系统生效主节点。最后一步中客户端需要将请求发送给新的主节点，如果旧的主节点重新上线，可能还自认为是主节点（脑裂），系统需要确保旧的主节点降级为从节点。
+如果是异步复制，就有可能导致数据丢失，如果失效前的数据没有被复制出去，重新上线后可能会给其他从节点发送同步请求，这样的话只能丢弃旧主节点上的数据。
+如果使用丢失数据的方式来解决数据复制不同步的问题，首先会破坏数据持久化，其次，如果依赖了Redis缓存等外部组件，可能会出现数据不一致，导致数据错误或泄漏。</p>
+<h4 id="复制日志">复制日志</h4>
+<p>基于语句的复制，所有操作日志发给从节点，但是有一些问题，例如NOW获取当前时间，在从节点就会产生不同的值。或者是使用了自增列，就必须顺序执行。
+基于WAL预写日志的复制，所有对数据库写入的字节序列都写入日志，然后发送给从节点重放。但是这种数据过于底层，必须与存储引擎紧密结合才能生效。
+基于行的逻辑日志的复制，逻辑日志指一系列记录描述对行级别的写请求，例如行插入、行删除、行更新。MySQL的binlog就是其中一种。</p>
+<h4 id="复制滞后最终一致性">复制滞后(最终一致性)</h4>
+<p>完全同步复制的系统在现实中非常不可靠，如果其中只要一个节点发生故障整个系统就不能写入了。所以说只能用异步复制，但是使用异步复制就会导致客户端访问从节点会读到过期的消息。
+接下来讨论复制滞后的问题与一些解决思路。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E7%B3%BB%E7%BB%9F/">分布式数据系统</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2024 kinokosu3
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.24.2">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>七牛云 on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/%E4%B8%83%E7%89%9B%E4%BA%91/</link>
+        <description>Recent content in 七牛云 on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Wed, 06 Sep 2017 16:41:54 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/%E4%B8%83%E7%89%9B%E4%BA%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>七牛云API工具使用</title>
+        <link>https://kinokosu3.github.io/p/%E4%B8%83%E7%89%9B%E4%BA%91api%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</link>
+        <pubDate>Wed, 06 Sep 2017 16:41:54 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/%E4%B8%83%E7%89%9B%E4%BA%91api%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</guid>
+        <description>&lt;h2 id=&#34;qshell的使用&#34;&gt;qshell的使用&lt;/h2&gt;
+&lt;h3 id=&#34;qshell安装&#34;&gt;qshell安装&lt;/h3&gt;
+&lt;p&gt;在这里下载&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.qiniu.com/kodo/tools/1302/qshell#7&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;qshell下载链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;选择自己平台的文件下载：&lt;/p&gt;
+&lt;p&gt;如果在使用的时候，报错&lt;code&gt;Permission Denied&lt;/code&gt;,可以使用命令&lt;code&gt;chmod +x qshell&lt;/code&gt;添加执行权限。
+如果是liunx或者osx用户，可以添加PATH来直接启动&lt;/p&gt;
+&lt;h3 id=&#34;添加或者显示当前用户的accesskey和secretkey&#34;&gt;添加或者显示当前用户的AccessKey和SecretKey&lt;/h3&gt;
+&lt;p&gt;秘钥可以在个人中心查看&lt;/p&gt;
+&lt;p&gt;命令格式&lt;code&gt;qshell account [AccessKey] [SecretKey]&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;上传文件&#34;&gt;上传文件&lt;/h3&gt;
+&lt;p&gt;命令格式 &lt;code&gt;qshell fput [空间名] [空间文件名] [文件路径]&lt;/code&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

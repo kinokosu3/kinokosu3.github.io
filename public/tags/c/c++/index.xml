@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>C/C&#43;&#43; on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/c/c&#43;&#43;/</link>
+        <description>Recent content in C/C&#43;&#43; on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Wed, 22 May 2019 22:52:21 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/c/c++/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>C&#43;&#43;解题技巧</title>
+        <link>https://kinokosu3.github.io/p/c-%E8%A7%A3%E9%A2%98%E6%8A%80%E5%B7%A7/</link>
+        <pubDate>Wed, 22 May 2019 22:52:21 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/c-%E8%A7%A3%E9%A2%98%E6%8A%80%E5%B7%A7/</guid>
+        <description>&lt;h3 id=&#34;基本操作&#34;&gt;基本操作&lt;/h3&gt;
+&lt;h3 id=&#34;字符串&#34;&gt;字符串&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;数字转字符串 &lt;code&gt;std::to_string()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;math函数&#34;&gt;math函数&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;求绝对值函数 &lt;code&gt;int abs()&lt;/code&gt;、&lt;code&gt;long labs()&lt;/code&gt;、&lt;code&gt;double fabs()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;取整函数 &lt;code&gt;floor()&lt;/code&gt;是向负无穷大舍入，floor(-10.5) == -11、&lt;code&gt;ceil()&lt;/code&gt;是向正无穷大舍入，ceil(-10.5) == -10&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="暑假已经过了一半了，复习的进度也大概过了一轮了（数学），对于这次课设，已经过了一段时间了，也是现在才突然想起来写一个随笔记一下过程，毕竟在我的傻屌大学里，也是少有的稍微有点规模的课程设计，前后的时间用了差不多一周，在交工前一天才主要完成了，因为我没怎么听课（哈哈哈哈），对于课题需要实现到怎么样子也是完成按照自己的想象来完成，到了答辩才发现我好像弄了一套和别人技术程度完成不一样的东西。之前也是完成没有弄过这方面的，也是边翻书边查资料来写，但是都不靠谱，弄的我走了无数的弯路，最后靠着自己的理解来完成了。还算挺有意思的。 初步：大概实现和电路仿真 拿到课题的时候，我就想着如何实现通信级别的东西，我也完全是半桶水，在看书思考的时候也完全没有考虑什么，教科书式的写了一套多机通信的代码，一开始写了个最简单的一对二，在仿真里调试，屁颠屁颠的写了什么校验码，收发数据握手，一大堆通信特性，代码也删删改改，迭代了几个版本，完成了一个能在仿真里跑的多机通信代码模型，拿到实机一跑，就掉进了真正的坑。跑完发现全没动静，串口调试也完全是乱码，完全不行，最后发现有线通信代码是可用的，拿两根线把单片机的RX/TX反接，完全ok，最后在某网站上的一篇资料发现了一句话，这句话也代表了整个项目的坑： &ldquo;有线通信时收发数据的时间间隔近似于0，无线通信时会有时间间隔&rdquo; 主要：无线通信代码和乱码debug 想通之后，没办法，靠教科书式，复制粘贴来的代码是没啥卵用了，自己对着通信步骤自己写一套吧，然后就开始重新写。之前因为需要仿真的缘故，软件只能在windows环境下运行，就没有使用mac，现在因为都是实机测试，就不需要Windows了，所以转到mac下完成代码。打了串口驱动，装了C51编译，找了个烧录脚本，都是mac下用的。好像到最后跑都是mac下编译出来的程序，当然展示时候用的keil格式的C代码，没有用这边编译器的版本。在写的时候也是不停de各种bug，比如收的代码放在中断，发就随便根据标示写，每次都开串口中断都要判断是否是收的数据。这个方式就解决双方握手之后时间无法对上，导致无法进行代码的情况，在收发之前都加了相近的时间挂起，主要细节不太记得了，反正好像双机ok，三机又不行了，后来一周都是不停的对时间间隔的时间进行调参。这时候很明显的一个bug，传输数据bug，运行出现死循环。都是收发时间对不上导致的。 完成： 画出时间轴，修改了时间间隔时间，实现无乱码同步 一直调试了几天的时间，最后在交工前，突然想起时间轴的问题，对每一步就仔细对准时间，然后就完成了整套通信的乱码问题。在一路下来，从很复杂的有着很多特性通信模型，一路简化下来，就只剩了一个握手收发的框架，在最后这段时间，在修改时间间隔解决乱码的中途，也根据课题集成了传感器代码进来，对每一个任务需求进行完成。也成功完成了答辩（这不是肯定的吗）。 后记 这次实训（算是吧）能有一个那么开放的过程也是因为老师，这次的物联网课老师好像是新来的，不太清楚我们这些傻屌学生的实力，就布置了一个较为开放性的课设。算是较为深度的训练了一次动手能力，虽然代码写了很多套都推翻了，越写越简单哈哈哈哈，大学生涯应该是没有机会了。也挺感概的。 代码开源了，虽然老师不想让我公开的，还想让我挂去展示厅，发傻屌中文期刊，我觉得我没有什么求名求利的心情，也算不上是什么很牛逼的东西，最后开始公开了，Open Source Spirit最重要嘛。 GitHub链接：B405-course-design">
+<title>一次物联网课设的回顾</title>
+
+<link rel='canonical' href='https://kinokosu3.github.io/p/%E4%B8%80%E6%AC%A1%E7%89%A9%E8%81%94%E7%BD%91%E8%AF%BE%E8%AE%BE%E7%9A%84%E5%9B%9E%E9%A1%BE/'>
+
+<link rel="stylesheet" href="/scss/style.min.a7a053668ceebf8b05187348b96ad7952720fc1f8071cb2e56e51480f0500c7e.css"><meta property='og:title' content="一次物联网课设的回顾">
+<meta property='og:description' content="暑假已经过了一半了，复习的进度也大概过了一轮了（数学），对于这次课设，已经过了一段时间了，也是现在才突然想起来写一个随笔记一下过程，毕竟在我的傻屌大学里，也是少有的稍微有点规模的课程设计，前后的时间用了差不多一周，在交工前一天才主要完成了，因为我没怎么听课（哈哈哈哈），对于课题需要实现到怎么样子也是完成按照自己的想象来完成，到了答辩才发现我好像弄了一套和别人技术程度完成不一样的东西。之前也是完成没有弄过这方面的，也是边翻书边查资料来写，但是都不靠谱，弄的我走了无数的弯路，最后靠着自己的理解来完成了。还算挺有意思的。 初步：大概实现和电路仿真 拿到课题的时候，我就想着如何实现通信级别的东西，我也完全是半桶水，在看书思考的时候也完全没有考虑什么，教科书式的写了一套多机通信的代码，一开始写了个最简单的一对二，在仿真里调试，屁颠屁颠的写了什么校验码，收发数据握手，一大堆通信特性，代码也删删改改，迭代了几个版本，完成了一个能在仿真里跑的多机通信代码模型，拿到实机一跑，就掉进了真正的坑。跑完发现全没动静，串口调试也完全是乱码，完全不行，最后发现有线通信代码是可用的，拿两根线把单片机的RX/TX反接，完全ok，最后在某网站上的一篇资料发现了一句话，这句话也代表了整个项目的坑： &ldquo;有线通信时收发数据的时间间隔近似于0，无线通信时会有时间间隔&rdquo; 主要：无线通信代码和乱码debug 想通之后，没办法，靠教科书式，复制粘贴来的代码是没啥卵用了，自己对着通信步骤自己写一套吧，然后就开始重新写。之前因为需要仿真的缘故，软件只能在windows环境下运行，就没有使用mac，现在因为都是实机测试，就不需要Windows了，所以转到mac下完成代码。打了串口驱动，装了C51编译，找了个烧录脚本，都是mac下用的。好像到最后跑都是mac下编译出来的程序，当然展示时候用的keil格式的C代码，没有用这边编译器的版本。在写的时候也是不停de各种bug，比如收的代码放在中断，发就随便根据标示写，每次都开串口中断都要判断是否是收的数据。这个方式就解决双方握手之后时间无法对上，导致无法进行代码的情况，在收发之前都加了相近的时间挂起，主要细节不太记得了，反正好像双机ok，三机又不行了，后来一周都是不停的对时间间隔的时间进行调参。这时候很明显的一个bug，传输数据bug，运行出现死循环。都是收发时间对不上导致的。 完成： 画出时间轴，修改了时间间隔时间，实现无乱码同步 一直调试了几天的时间，最后在交工前，突然想起时间轴的问题，对每一步就仔细对准时间，然后就完成了整套通信的乱码问题。在一路下来，从很复杂的有着很多特性通信模型，一路简化下来，就只剩了一个握手收发的框架，在最后这段时间，在修改时间间隔解决乱码的中途，也根据课题集成了传感器代码进来，对每一个任务需求进行完成。也成功完成了答辩（这不是肯定的吗）。 后记 这次实训（算是吧）能有一个那么开放的过程也是因为老师，这次的物联网课老师好像是新来的，不太清楚我们这些傻屌学生的实力，就布置了一个较为开放性的课设。算是较为深度的训练了一次动手能力，虽然代码写了很多套都推翻了，越写越简单哈哈哈哈，大学生涯应该是没有机会了。也挺感概的。 代码开源了，虽然老师不想让我公开的，还想让我挂去展示厅，发傻屌中文期刊，我觉得我没有什么求名求利的心情，也算不上是什么很牛逼的东西，最后开始公开了，Open Source Spirit最重要嘛。 GitHub链接：B405-course-design">
+<meta property='og:url' content='https://kinokosu3.github.io/p/%E4%B8%80%E6%AC%A1%E7%89%A9%E8%81%94%E7%BD%91%E8%AF%BE%E8%AE%BE%E7%9A%84%E5%9B%9E%E9%A1%BE/'>
+<meta property='og:site_name' content='kinokosu3のblog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Zigbee' /><meta property='article:tag' content='51单片机' /><meta property='article:published_time' content='2019-08-09T18:33:02&#43;00:00'/><meta property='article:modified_time' content='2019-08-09T18:33:02&#43;00:00'/>
+<meta name="twitter:title" content="一次物联网课设的回顾">
+<meta name="twitter:description" content="暑假已经过了一半了，复习的进度也大概过了一轮了（数学），对于这次课设，已经过了一段时间了，也是现在才突然想起来写一个随笔记一下过程，毕竟在我的傻屌大学里，也是少有的稍微有点规模的课程设计，前后的时间用了差不多一周，在交工前一天才主要完成了，因为我没怎么听课（哈哈哈哈），对于课题需要实现到怎么样子也是完成按照自己的想象来完成，到了答辩才发现我好像弄了一套和别人技术程度完成不一样的东西。之前也是完成没有弄过这方面的，也是边翻书边查资料来写，但是都不靠谱，弄的我走了无数的弯路，最后靠着自己的理解来完成了。还算挺有意思的。 初步：大概实现和电路仿真 拿到课题的时候，我就想着如何实现通信级别的东西，我也完全是半桶水，在看书思考的时候也完全没有考虑什么，教科书式的写了一套多机通信的代码，一开始写了个最简单的一对二，在仿真里调试，屁颠屁颠的写了什么校验码，收发数据握手，一大堆通信特性，代码也删删改改，迭代了几个版本，完成了一个能在仿真里跑的多机通信代码模型，拿到实机一跑，就掉进了真正的坑。跑完发现全没动静，串口调试也完全是乱码，完全不行，最后发现有线通信代码是可用的，拿两根线把单片机的RX/TX反接，完全ok，最后在某网站上的一篇资料发现了一句话，这句话也代表了整个项目的坑： &ldquo;有线通信时收发数据的时间间隔近似于0，无线通信时会有时间间隔&rdquo; 主要：无线通信代码和乱码debug 想通之后，没办法，靠教科书式，复制粘贴来的代码是没啥卵用了，自己对着通信步骤自己写一套吧，然后就开始重新写。之前因为需要仿真的缘故，软件只能在windows环境下运行，就没有使用mac，现在因为都是实机测试，就不需要Windows了，所以转到mac下完成代码。打了串口驱动，装了C51编译，找了个烧录脚本，都是mac下用的。好像到最后跑都是mac下编译出来的程序，当然展示时候用的keil格式的C代码，没有用这边编译器的版本。在写的时候也是不停de各种bug，比如收的代码放在中断，发就随便根据标示写，每次都开串口中断都要判断是否是收的数据。这个方式就解决双方握手之后时间无法对上，导致无法进行代码的情况，在收发之前都加了相近的时间挂起，主要细节不太记得了，反正好像双机ok，三机又不行了，后来一周都是不停的对时间间隔的时间进行调参。这时候很明显的一个bug，传输数据bug，运行出现死循环。都是收发时间对不上导致的。 完成： 画出时间轴，修改了时间间隔时间，实现无乱码同步 一直调试了几天的时间，最后在交工前，突然想起时间轴的问题，对每一步就仔细对准时间，然后就完成了整套通信的乱码问题。在一路下来，从很复杂的有着很多特性通信模型，一路简化下来，就只剩了一个握手收发的框架，在最后这段时间，在修改时间间隔解决乱码的中途，也根据课题集成了传感器代码进来，对每一个任务需求进行完成。也成功完成了答辩（这不是肯定的吗）。 后记 这次实训（算是吧）能有一个那么开放的过程也是因为老师，这次的物联网课老师好像是新来的，不太清楚我们这些傻屌学生的实力，就布置了一个较为开放性的课设。算是较为深度的训练了一次动手能力，虽然代码写了很多套都推翻了，越写越简单哈哈哈哈，大学生涯应该是没有机会了。也挺感概的。 代码开源了，虽然老师不想让我公开的，还想让我挂去展示厅，发傻屌中文期刊，我觉得我没有什么求名求利的心情，也算不上是什么很牛逼的东西，最后开始公开了，Open Source Spirit最重要嘛。 GitHub链接：B405-course-design">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/40928807_hu2315d04c5fb87fec33fa788c664ba42a_29261_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">kinokosu3のblog</a></h1>
+            <h2 class="site-description">Golang、Kubernetes、Cloud Native、Essays</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/kinokosu3'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#初步大概实现和电路仿真">初步：大概实现和电路仿真</a></li>
+        <li><a href="#主要无线通信代码和乱码debug">主要：无线通信代码和乱码debug</a></li>
+        <li><a href="#完成-画出时间轴修改了时间间隔时间实现无乱码同步">完成： 画出时间轴，修改了时间间隔时间，实现无乱码同步</a></li>
+        <li><a href="#后记">后记</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E4%B8%80%E6%AC%A1%E7%89%A9%E8%81%94%E7%BD%91%E8%AF%BE%E8%AE%BE%E7%9A%84%E5%9B%9E%E9%A1%BE/">一次物联网课设的回顾</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 09, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>暑假已经过了一半了，复习的进度也大概过了一轮了（数学），对于这次课设，已经过了一段时间了，也是现在才突然想起来写一个随笔记一下过程，毕竟在我的傻屌大学里，也是少有的稍微有点规模的课程设计，前后的时间用了差不多一周，在交工前一天才主要完成了，因为我没怎么听课（哈哈哈哈），对于课题需要实现到怎么样子也是完成按照自己的想象来完成，到了答辩才发现我好像弄了一套和别人技术程度完成不一样的东西。之前也是完成没有弄过这方面的，也是边翻书边查资料来写，但是都不靠谱，弄的我走了无数的弯路，最后靠着自己的理解来完成了。还算挺有意思的。</p>
+<h3 id="初步大概实现和电路仿真">初步：大概实现和电路仿真</h3>
+<p>拿到课题的时候，我就想着如何实现通信级别的东西，我也完全是半桶水，在看书思考的时候也完全没有考虑什么，教科书式的写了一套多机通信的代码，一开始写了个最简单的一对二，在仿真里调试，屁颠屁颠的写了什么校验码，收发数据握手，一大堆通信特性，代码也删删改改，迭代了几个版本，完成了一个能在仿真里跑的多机通信代码模型，拿到实机一跑，就掉进了真正的坑。跑完发现全没动静，串口调试也完全是乱码，完全不行，最后发现有线通信代码是可用的，拿两根线把单片机的RX/TX反接，完全ok，最后在某网站上的一篇资料发现了一句话，这句话也代表了整个项目的坑：</p>
+<blockquote>
+<p>&ldquo;有线通信时收发数据的时间间隔近似于0，无线通信时会有时间间隔&rdquo;</p>
+</blockquote>
+<h3 id="主要无线通信代码和乱码debug">主要：无线通信代码和乱码debug</h3>
+<p>想通之后，没办法，靠教科书式，复制粘贴来的代码是没啥卵用了，自己对着通信步骤自己写一套吧，然后就开始重新写。之前因为需要仿真的缘故，软件只能在windows环境下运行，就没有使用mac，现在因为都是实机测试，就不需要Windows了，所以转到mac下完成代码。打了串口驱动，装了C51编译，找了个烧录脚本，都是mac下用的。好像到最后跑都是mac下编译出来的程序，当然展示时候用的keil格式的C代码，没有用这边编译器的版本。在写的时候也是不停de各种bug，比如收的代码放在中断，发就随便根据标示写，每次都开串口中断都要判断是否是收的数据。这个方式就解决双方握手之后时间无法对上，导致无法进行代码的情况，在收发之前都加了相近的时间挂起，主要细节不太记得了，反正好像双机ok，三机又不行了，后来一周都是不停的对时间间隔的时间进行调参。这时候很明显的一个bug，传输数据bug，运行出现死循环。都是收发时间对不上导致的。</p>
+<h3 id="完成-画出时间轴修改了时间间隔时间实现无乱码同步">完成： 画出时间轴，修改了时间间隔时间，实现无乱码同步</h3>
+<p>一直调试了几天的时间，最后在交工前，突然想起时间轴的问题，对每一步就仔细对准时间，然后就完成了整套通信的乱码问题。在一路下来，从很复杂的有着很多特性通信模型，一路简化下来，就只剩了一个握手收发的框架，在最后这段时间，在修改时间间隔解决乱码的中途，也根据课题集成了传感器代码进来，对每一个任务需求进行完成。也成功完成了答辩（这不是肯定的吗）。</p>
+<h3 id="后记">后记</h3>
+<p>这次实训（算是吧）能有一个那么开放的过程也是因为老师，这次的物联网课老师好像是新来的，不太清楚我们这些傻屌学生的实力，就布置了一个较为开放性的课设。算是较为深度的训练了一次动手能力，虽然代码写了很多套都推翻了，越写越简单哈哈哈哈，大学生涯应该是没有机会了。也挺感概的。</p>
+<p>代码开源了，虽然老师不想让我公开的，还想让我挂去展示厅，发傻屌中文期刊，我觉得我没有什么求名求利的心情，也算不上是什么很牛逼的东西，最后开始公开了，Open Source Spirit最重要嘛。</p>
+<p>GitHub链接：<a class="link" href="https://github.com/kinokosu3/B405-course-design"  target="_blank" rel="noopener"
+    >B405-course-design</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/zigbee/">Zigbee</a>
+        
+            <a href="/tags/51%E5%8D%95%E7%89%87%E6%9C%BA/">51单片机</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2024 kinokosu3
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.24.2">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

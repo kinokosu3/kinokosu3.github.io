@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 安装zsh 如果你是mac用户，系统已经自带有了，可以通过命令cat /etc/shells查看\n其他的liunx系统就从软件源安装就好了，Ubuntu，debianapt-get install zsh, centos,redhatyum apt-get zsh\n安装oh-my-zsh 虽然zsh功能强大，但是配置复杂，如果你专研过算法导论编译原理可以自己写一套。。。。所以国外有大神写了一套配置oh-my-zsh\ngit clone安装方法:\n克隆仓库 $ git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh 创建一个新的zsh配置文件 $ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc 改变默认的shell $ chsh -s /bin/zsh 重新打开终端就好了\n">
+<title>zsh终端折腾纪录①</title>
+
+<link rel='canonical' href='https://kinokosu3.github.io/p/zsh%E7%BB%88%E7%AB%AF%E6%8A%98%E8%85%BE%E7%BA%AA%E5%BD%95/'>
+
+<link rel="stylesheet" href="/scss/style.min.a7a053668ceebf8b05187348b96ad7952720fc1f8071cb2e56e51480f0500c7e.css"><meta property='og:title' content="zsh终端折腾纪录①">
+<meta property='og:description' content=" 安装zsh 如果你是mac用户，系统已经自带有了，可以通过命令cat /etc/shells查看\n其他的liunx系统就从软件源安装就好了，Ubuntu，debianapt-get install zsh, centos,redhatyum apt-get zsh\n安装oh-my-zsh 虽然zsh功能强大，但是配置复杂，如果你专研过算法导论编译原理可以自己写一套。。。。所以国外有大神写了一套配置oh-my-zsh\ngit clone安装方法:\n克隆仓库 $ git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh 创建一个新的zsh配置文件 $ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc 改变默认的shell $ chsh -s /bin/zsh 重新打开终端就好了\n">
+<meta property='og:url' content='https://kinokosu3.github.io/p/zsh%E7%BB%88%E7%AB%AF%E6%8A%98%E8%85%BE%E7%BA%AA%E5%BD%95/'>
+<meta property='og:site_name' content='kinokosu3のblog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='zsh' /><meta property='article:published_time' content='2017-08-19T19:16:41&#43;00:00'/><meta property='article:modified_time' content='2017-08-19T19:16:41&#43;00:00'/>
+<meta name="twitter:title" content="zsh终端折腾纪录①">
+<meta name="twitter:description" content=" 安装zsh 如果你是mac用户，系统已经自带有了，可以通过命令cat /etc/shells查看\n其他的liunx系统就从软件源安装就好了，Ubuntu，debianapt-get install zsh, centos,redhatyum apt-get zsh\n安装oh-my-zsh 虽然zsh功能强大，但是配置复杂，如果你专研过算法导论编译原理可以自己写一套。。。。所以国外有大神写了一套配置oh-my-zsh\ngit clone安装方法:\n克隆仓库 $ git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh 创建一个新的zsh配置文件 $ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc 改变默认的shell $ chsh -s /bin/zsh 重新打开终端就好了\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/40928807_hu2315d04c5fb87fec33fa788c664ba42a_29261_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">kinokosu3のblog</a></h1>
+            <h2 class="site-description">Golang、Kubernetes、Cloud Native、Essays</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/kinokosu3'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#安装zsh">安装zsh</a></li>
+        <li><a href="#安装oh-my-zsh">安装oh-my-zsh</a>
+          <ol>
+            <li><a href="#克隆仓库">克隆仓库</a></li>
+            <li><a href="#创建一个新的zsh配置文件">创建一个新的zsh配置文件</a></li>
+            <li><a href="#改变默认的shell">改变默认的shell</a></li>
+          </ol>
+        </li>
+        <li><a href="#pip安装powerline-status">pip安装powerline-status</a></li>
+        <li><a href="#使用的powerline-themes">使用的powerline-themes</a></li>
+        <li><a href="#powerline字体">powerline字体</a></li>
+        <li><a href="#使用iterm2导入字体">使用iterm2导入字体</a></li>
+        <li><a href="#vim-powerline开启">vim powerline开启</a></li>
+        <li><a href="#zsh插件开启">zsh插件开启</a></li>
+        <li><a href="#自动补全插件incr安装">自动补全插件incr安装</a></li>
+        <li><a href="#更多的选择翻译oh-my-zsh-powerline-theme">更多的选择（翻译）（oh-my-zsh-powerline-theme）</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%A4%87%E5%BF%98%E5%BD%95/" >
+                备忘录
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/zsh%E7%BB%88%E7%AB%AF%E6%8A%98%E8%85%BE%E7%BA%AA%E5%BD%95/">zsh终端折腾纪录①</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 19, 2017</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <hr>
+<h3 id="安装zsh">安装zsh</h3>
+<ul>
+<li>
+<p>如果你是mac用户，系统已经自带有了，可以通过命令<code>cat /etc/shells</code>查看</p>
+</li>
+<li>
+<p>其他的liunx系统就从软件源安装就好了，Ubuntu，debian<code>apt-get install zsh</code>, centos,redhat<code>yum apt-get zsh</code></p>
+</li>
+</ul>
+<h3 id="安装oh-my-zsh">安装oh-my-zsh</h3>
+<p>虽然zsh功能强大，但是配置复杂，如果你专研过算法导论编译原理可以自己写一套。。。。所以国外有大神写了一套配置oh-my-zsh</p>
+<p><code>git clone</code>安装方法:</p>
+<h4 id="克隆仓库">克隆仓库</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+</span></span></code></pre></div><h4 id="创建一个新的zsh配置文件">创建一个新的zsh配置文件</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+</span></span></code></pre></div><h4 id="改变默认的shell">改变默认的shell</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ chsh -s /bin/zsh
+</span></span></code></pre></div><p>重新打开终端就好了</p>
+<h3 id="pip安装powerline-status">pip安装powerline-status</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">install</span> <span class="n">powerline</span><span class="o">-</span><span class="n">status</span>
+</span></span></code></pre></div><h3 id="使用的powerline-themes">使用的powerline-themes</h3>
+<p>github链接<a class="link" href="https://github.com/jeremyFreeAgent/oh-my-zsh-powerline-theme"  target="_blank" rel="noopener"
+    >oh-my-zsh-powerline-theme</a></p>
+<p>将文件中的<code>powerline.zsh-theme</code>复制到路径<code>~/.oh-my-zsh/themes</code></p>
+<p>然后更改文件<code>vim .zshrc</code>,更改：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">ZSH_THEME</span><span class="o">=</span><span class="s2">&#34;powerline&#34;</span>
+</span></span></code></pre></div><p>添加：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span><span class="s2">&#34;xterm-256color&#34;</span>
+</span></span></code></pre></div><h3 id="powerline字体">powerline字体</h3>
+<p>github链接<a class="link" href="https://github.com/powerline/powerline"  target="_blank" rel="noopener"
+    >链接</a></p>
+<p>然后安装powerline字体</p>
+<h3 id="使用iterm2导入字体">使用iterm2导入字体</h3>
+<p>preferences-&gt;profiles-&gt;colors-&gt;color presets 导入主题颜色</p>
+<p>text有字体选择，change font，选择powerline字体</p>
+<h3 id="vim-powerline开启">vim powerline开启</h3>
+<p>打开<code>vim .vimrc</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">rtp</span><span class="o">+=</span>/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/powerline/bindings/vim/
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">laststatus</span><span class="o">=</span><span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">t_Co</span><span class="o">=</span><span class="m">256</span>
+</span></span></code></pre></div><p><code>rtp+=</code>后面跟的路径是在python的库文件夹<code>site-packages</code>里面，我们可以在交互模式下输入<code>import site; site.getsitepackages()</code>得到路径</p>
+<h3 id="zsh插件开启">zsh插件开启</h3>
+<p>修改<code>.zshrc</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pulgins<span class="o">(</span>&lt;插件1&gt;, &lt;插件2&gt;<span class="o">)</span>
+</span></span></code></pre></div><h3 id="自动补全插件incr安装">自动补全插件incr安装</h3>
+<p>官网<a class="link" href="http://mimosa-pudica.net/zsh-incremental.html"  target="_blank" rel="noopener"
+    >链接</a></p>
+<p>在<code>~/.oh-my-ssh/plugins/</code>新建一个目录incr(注意要使用sudo创建)，然后新建一个文件<code>sudo vim incr-0.2.zsh</code>,把插件内容全部复制进去，然后配置<code>.zshrc</code>文件，在文档最后面插入</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">source</span> ~/.oh-my-zsh/plugins/incr/incr*.zsh
+</span></span></code></pre></div><p>防止某天插件链接挂了，下面放出插件内容</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># Incremental completion for zsh</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># by y.fujii &lt;y-fujii at mimosa-pudica.net&gt;, public domain</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">autoload -U compinit
+</span></span><span class="line"><span class="cl">zle -N self-insert self-insert-incr
+</span></span><span class="line"><span class="cl">zle -N vi-cmd-mode-incr
+</span></span><span class="line"><span class="cl">zle -N vi-backward-delete-char-incr
+</span></span><span class="line"><span class="cl">zle -N backward-delete-char-incr
+</span></span><span class="line"><span class="cl">zle -N expand-or-complete-prefix-incr
+</span></span><span class="line"><span class="cl">compinit
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">bindkey -M viins <span class="s1">&#39;^[&#39;</span> vi-cmd-mode-incr
+</span></span><span class="line"><span class="cl">bindkey -M viins <span class="s1">&#39;^h&#39;</span> vi-backward-delete-char-incr
+</span></span><span class="line"><span class="cl">bindkey -M viins <span class="s1">&#39;^?&#39;</span> vi-backward-delete-char-incr
+</span></span><span class="line"><span class="cl">bindkey -M viins <span class="s1">&#39;^i&#39;</span> expand-or-complete-prefix-incr
+</span></span><span class="line"><span class="cl">bindkey -M emacs <span class="s1">&#39;^h&#39;</span> backward-delete-char-incr
+</span></span><span class="line"><span class="cl">bindkey -M emacs <span class="s1">&#39;^?&#39;</span> backward-delete-char-incr
+</span></span><span class="line"><span class="cl">bindkey -M emacs <span class="s1">&#39;^i&#39;</span> expand-or-complete-prefix-incr
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">unsetopt automenu
+</span></span><span class="line"><span class="cl">compdef -d scp
+</span></span><span class="line"><span class="cl">compdef -d tar
+</span></span><span class="line"><span class="cl">compdef -d make
+</span></span><span class="line"><span class="cl">compdef -d java
+</span></span><span class="line"><span class="cl">compdef -d svn
+</span></span><span class="line"><span class="cl">compdef -d cvs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># TODO:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     cp dir/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">now_predict</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> limit-completion
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">((</span>compstate<span class="o">[</span>nmatches<span class="o">]</span> &lt;<span class="o">=</span> 1<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		zle -M <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">elif</span> <span class="o">((</span>compstate<span class="o">[</span>list_lines<span class="o">]</span> &gt; 6<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		compstate<span class="o">[</span>list<span class="o">]=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">		zle -M <span class="s2">&#34;too many matches.&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> correct-prediction
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">((</span><span class="nv">now_predict</span> <span class="o">==</span> 1<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$BUFFER</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$buffer_prd</span><span class="s2">&#34;</span> <span class="o">]]</span> <span class="o">||</span> <span class="o">((</span>CURSOR !<span class="o">=</span> cursor_org<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			<span class="nv">now_predict</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> remove-prediction
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">((</span><span class="nv">now_predict</span> <span class="o">==</span> 1<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">BUFFER</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$buffer_org</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">now_predict</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> show-prediction
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># assert(now_predict == 0)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span>
+</span></span><span class="line"><span class="cl">		<span class="o">((</span><span class="nv">PENDING</span> <span class="o">==</span> 0<span class="o">))</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">((</span>CURSOR &gt; 1<span class="o">))</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$PREBUFFER</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;&#34;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">		<span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$BUFFER</span><span class="s2">[CURSOR]&#34;</span> !<span class="o">=</span> <span class="s2">&#34; &#34;</span> <span class="o">]]</span>
+</span></span><span class="line"><span class="cl">	<span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">cursor_org</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CURSOR</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">buffer_org</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$BUFFER</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">comppostfuncs</span><span class="o">=(</span>limit-completion<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		zle complete-word
+</span></span><span class="line"><span class="cl">		<span class="nv">cursor_prd</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CURSOR</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">buffer_prd</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$BUFFER</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$buffer_org</span><span class="s2">[1,cursor_org]&#34;</span> <span class="o">==</span> <span class="s2">&#34;</span><span class="nv">$buffer_prd</span><span class="s2">[1,cursor_org]&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			<span class="nv">CURSOR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$cursor_org</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$buffer_org</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$buffer_prd</span><span class="s2">&#34;</span> <span class="o">]]</span> <span class="o">||</span> <span class="o">((</span>cursor_org !<span class="o">=</span> cursor_prd<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">				<span class="nv">now_predict</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">			<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			<span class="nv">BUFFER</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$buffer_org</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="nv">CURSOR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$cursor_org</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> -n <span class="s2">&#34;\e[32m&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		zle -M <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> preexec
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -n <span class="s2">&#34;\e[39m&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> vi-cmd-mode-incr
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	correct-prediction
+</span></span><span class="line"><span class="cl">	remove-prediction
+</span></span><span class="line"><span class="cl">	zle vi-cmd-mode
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> self-insert-incr
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	correct-prediction
+</span></span><span class="line"><span class="cl">	remove-prediction
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> zle .self-insert<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		show-prediction
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> vi-backward-delete-char-incr
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	correct-prediction
+</span></span><span class="line"><span class="cl">	remove-prediction
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> zle vi-backward-delete-char<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		show-prediction
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> backward-delete-char-incr
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	correct-prediction
+</span></span><span class="line"><span class="cl">	remove-prediction
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> zle backward-delete-char<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		show-prediction
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> expand-or-complete-prefix-incr
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	correct-prediction
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">((</span><span class="nv">now_predict</span> <span class="o">==</span> 1<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">CURSOR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$cursor_prd</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">now_predict</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">comppostfuncs</span><span class="o">=(</span>limit-completion<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		zle list-choices
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		remove-prediction
+</span></span><span class="line"><span class="cl">		zle expand-or-complete-prefix
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><h3 id="更多的选择翻译oh-my-zsh-powerline-theme">更多的选择（翻译）（oh-my-zsh-powerline-theme）</h3>
+<p>所有的选项都必须在你的<code>.zshrc</code>配置文件中修改</p>
+<p>默认下，在powerline右侧显示日期和时间，如果你不想要时间，可以选择你想要的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_B</span><span class="o">=</span><span class="s2">&#34;time replacement&#34;</span>
+</span></span></code></pre></div><p>或者你不想显示任何内容：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_B</span><span class="o">=</span><span class="s2">&#34;none&#34;</span>
+</span></span></code></pre></div><p>如果你要在时间旁边显示日期：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_A</span><span class="o">=</span><span class="s2">&#34;date&#34;</span>
+</span></span></code></pre></div><p>如果你想在时间之前显示最后一个命令的退出代码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_A</span><span class="o">=</span><span class="s2">&#34;exit-status&#34;</span>
+</span></span></code></pre></div><p>或者你想要它（退出代码）只出现在错误运行中：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_A</span><span class="o">=</span><span class="s2">&#34;exit-status-on-fail&#34;</span>
+</span></span></code></pre></div><p>如果你要在时间之前显示上一个命令的日期或者非零退出代码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_A</span><span class="o">=</span><span class="s2">&#34;mixed&#34;</span>
+</span></span></code></pre></div><p>如果你要在时间之后显示自定义文本</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_A</span><span class="o">=</span><span class="s2">&#34;blackfire.io&#34;</span>
+</span></span></code></pre></div><p>如果你想改变POWERLINE_RIGHT_A元素的颜色:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_A_COLOR_FRONT</span><span class="o">=</span><span class="s2">&#34;black&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">POWERLINE_RIGHT_A_COLOR_BACK</span><span class="o">=</span><span class="s2">&#34;red&#34;</span>
+</span></span></code></pre></div><p>不翻了其实都看得懂。。。</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/zsh/">Zsh</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/liunx%E5%85%A8%E5%85%BB%E6%88%90/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">liunx全养成①</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mongodb%E4%B8%80%E4%BA%9B%E9%83%A8%E7%BD%B2%E8%AE%BE%E7%BD%AE/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">mongodb一些部署设置</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/scrapy%E5%BC%80%E5%8F%91%E5%A4%87%E5%BF%98%E5%BD%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">scrapy开发备忘录</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/flask-uwsgi-nginx%E7%9A%84%E9%83%A8%E7%BD%B2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">flask&#43;uwsgi&#43;nginx的部署</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/python%E7%9F%A5%E8%AF%86%E5%A4%87%E5%BF%98%E5%BD%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">python知识备忘录</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2024 kinokosu3
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.24.2">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

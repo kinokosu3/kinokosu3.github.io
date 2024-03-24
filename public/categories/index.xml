@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Categories on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/categories/</link>
+        <description>Recent content in Categories on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Sat, 05 Mar 2022 14:29:10 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>CI/CD</title>
+        <link>https://kinokosu3.github.io/categories/ci/cd/</link>
+        <pubDate>Sat, 05 Mar 2022 14:29:10 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/ci/cd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Kubernetes</title>
+        <link>https://kinokosu3.github.io/categories/kubernetes/</link>
+        <pubDate>Sat, 05 Mar 2022 14:29:10 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/kubernetes/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Golang</title>
+        <link>https://kinokosu3.github.io/categories/golang/</link>
+        <pubDate>Sun, 02 Jan 2022 14:29:10 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/golang/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>LeetCode</title>
+        <link>https://kinokosu3.github.io/categories/leetcode/</link>
+        <pubDate>Sun, 10 Oct 2021 14:29:10 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/leetcode/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>备忘录</title>
+        <link>https://kinokosu3.github.io/categories/%E5%A4%87%E5%BF%98%E5%BD%95/</link>
+        <pubDate>Sun, 11 Mar 2018 11:37:21 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/%E5%A4%87%E5%BF%98%E5%BD%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>学习纪录</title>
+        <link>https://kinokosu3.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%BA%AA%E5%BD%95/</link>
+        <pubDate>Wed, 25 Oct 2017 10:01:14 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%BA%AA%E5%BD%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>文档纪录</title>
+        <link>https://kinokosu3.github.io/categories/%E6%96%87%E6%A1%A3%E7%BA%AA%E5%BD%95/</link>
+        <pubDate>Wed, 06 Sep 2017 16:41:54 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/%E6%96%87%E6%A1%A3%E7%BA%AA%E5%BD%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>学习心得</title>
+        <link>https://kinokosu3.github.io/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/</link>
+        <pubDate>Wed, 16 Aug 2017 13:42:55 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Test</title>
+        <link>https://kinokosu3.github.io/categories/test/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/categories/test/</guid>
+        <description>&lt;img src="https://kinokosu3.github.io/categories/test/hutomo-abrianto-l2jk-uxb1BY-unsplash.jpg" alt="Featured image of post Test" /&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

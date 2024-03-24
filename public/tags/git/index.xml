@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Git on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/git/</link>
+        <description>Recent content in Git on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Sat, 14 Apr 2018 10:37:02 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>github二级验证登录</title>
+        <link>https://kinokosu3.github.io/p/github%E4%BA%8C%E7%BA%A7%E9%AA%8C%E8%AF%81%E7%99%BB%E5%BD%95/</link>
+        <pubDate>Sat, 14 Apr 2018 10:37:02 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/github%E4%BA%8C%E7%BA%A7%E9%AA%8C%E8%AF%81%E7%99%BB%E5%BD%95/</guid>
+        <description>&lt;p&gt;开启了二级验证的GitHub的push验证，使用github access token登录&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>搭建git服务器</title>
+        <link>https://kinokosu3.github.io/p/%E6%90%AD%E5%BB%BAgit%E6%9C%8D%E5%8A%A1%E5%99%A8/</link>
+        <pubDate>Thu, 10 Aug 2017 10:26:52 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/%E6%90%AD%E5%BB%BAgit%E6%9C%8D%E5%8A%A1%E5%99%A8/</guid>
+        <description>&lt;hr&gt;
+&lt;p&gt;因为自己的代码写的太难看，不太敢老是丢在github上，但是我又想有一个远程仓库，然后手上有一个树莓派，我们就可以用这个来搭建一个git服务器&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;适合Ubuntu和debian&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;安装git&#34;&gt;安装Git&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo apt-get install git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;建立一个git用户&#34;&gt;建立一个git用户&lt;/h3&gt;
+&lt;p&gt;我们以后要用推送到远程仓库，需要使用这个账户使用git服务&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo useradd git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;生成公钥&#34;&gt;生成公钥&lt;/h3&gt;
+&lt;p&gt;在用户文件夹路径下（/home/git/）输入命令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ ssh-keygen –t rsa
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一路回车&lt;/p&gt;
+&lt;p&gt;然后命令&lt;code&gt;ls -a&lt;/code&gt; 查看是否有.ssh文件夹，进入&lt;/p&gt;
+&lt;h3 id=&#34;配置无密码ssh登录&#34;&gt;配置无密码ssh登录&lt;/h3&gt;
+&lt;p&gt;在/home/git/.ssh输入命令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo vim authorized_keys
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;你会发现有两个文件id_rsa.pub和id_rsa，id_rsa.pub是公钥文件&lt;/p&gt;
+&lt;p&gt;创建authorized_keys文件，然后将你的登录的机器的公钥放进去，你的公钥一样在.ssh文件夹的id_rsa.pub里&lt;/p&gt;
+&lt;p&gt;然后我们重启试试能不能用git用户无密码登录&lt;/p&gt;
+&lt;h3 id=&#34;初始化git仓库&#34;&gt;初始化git仓库&lt;/h3&gt;
+&lt;p&gt;先选定一个目录作为git仓库，然后创建一个名为sample.git的git仓库&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo git init --bare sample.git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在git里，&amp;ndash;bare是创建一个裸仓库，服务器上的git仓库都以git结尾，然后我们修改权限&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo chown -R git:git sample.git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;推送和克隆&#34;&gt;推送和克隆&lt;/h3&gt;
+&lt;p&gt;如果我们要推送一个仓库到这个裸仓库，或者以后需要远程推送，我们就需要使用push命令&lt;/p&gt;
+&lt;p&gt;如果是第一次推送，首先我们要关联一个远程库，也就是之前的裸仓库&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ git remote add origin git@地址:git仓库路径
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;添加后，远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。&lt;/p&gt;
+&lt;p&gt;然后我们就可以把本地库的内容推送的远程库上：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ git push -u origin master
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用git push命令，其实是把当前分支master推送到远程上&lt;/p&gt;
+&lt;p&gt;由于我们这是第一次推送仓库，远程库是空的，所以我们加上了&lt;code&gt;-u&lt;/code&gt;参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来&lt;/p&gt;
+&lt;p&gt;如果我们本体做了修改，我们就可以通过命令&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ git push origin master
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;把本地master分支的最新修改推送到github&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Web开发 on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/web%E5%BC%80%E5%8F%91/</link>
+        <description>Recent content in Web开发 on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Mon, 09 Apr 2018 10:47:39 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/web%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Vue从零养成</title>
+        <link>https://kinokosu3.github.io/p/vue%E4%BB%8E%E9%9B%B6%E5%85%BB%E6%88%90/</link>
+        <pubDate>Mon, 09 Apr 2018 10:47:39 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/vue%E4%BB%8E%E9%9B%B6%E5%85%BB%E6%88%90/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;现在前端框架的乱战从三强分立(React,Vue,AngularJS)逐渐变成了两强(React,Vue),虽然一直在做着数据分析的工作，但是还是想把一些东西直接放在web上可视化或者交互，趁着有一个清明假期就去学习了一下&lt;code&gt;Vue&lt;/code&gt;框架(React接触过之后感觉有些难懂)，以下是一些备忘录,细节不会说的太多，主要实现细节可以baidu or Google&lt;/p&gt;
+&lt;p&gt;现代前端较为复杂，有了webpack之后，更像是软件开发了(模块化带来的错觉)&lt;/p&gt;
+&lt;p&gt;ES6/ES5+了解一下&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;使用的版本：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Vue 2.9.3&lt;/li&gt;
+&lt;li&gt;npm 5.6.0&lt;/li&gt;
+&lt;li&gt;Vue-router 3.0.1&lt;/li&gt;
+&lt;li&gt;webpack 3.11.0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;命令行的操作使用windows10下的console emulator(所以所有的命令都通配Liunx，但是要注意路径)
+npm国内安装会稍微慢，如果嫌慢可以科学上网&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h3 id=&#34;webpack了解&#34;&gt;Webpack了解&lt;/h3&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://zhaoda.net/webpack-handbook/module-system.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;webpack中文文档&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;scss了解&#34;&gt;scss了解&lt;/h3&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.sass.hk/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;scss中文网&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;vue-cli的基础使用&#34;&gt;Vue-cli的基础使用&lt;/h2&gt;
+&lt;p&gt;首先，对web开发三巨头(HTML,CSS,JavaScript)还不熟练的，可以单网页练习使用&lt;code&gt;Vue&lt;/code&gt;,但是我们可以使用官方推荐的脚手架，脚手架使用&lt;code&gt;webpack&lt;/code&gt;可以直接打包，官方帮助我们设定了&lt;code&gt;webpack&lt;/code&gt;的打包文件，免去我们编写&lt;code&gt;webpack&lt;/code&gt;配置的痛苦，我们可以专心开发&lt;code&gt;Vue&lt;/code&gt;的组件。&lt;/p&gt;
+&lt;p&gt;对于&lt;code&gt;npm&lt;/code&gt;的本地和全局安装，反正我喜欢本地安装(python virtualenv的后遗症)，我们安装&lt;code&gt;Vue-Cli&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;npm install vue-cli --save-dev
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们初始化一个&lt;code&gt;webpack&lt;/code&gt;模板:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;./node_modules/.bin/vue init webpack my-project
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;my-project&lt;/code&gt;是我们项目的名字&lt;/p&gt;
+&lt;p&gt;接下来会有一大堆设置的东西，如果看不懂直接一路回车跳过&lt;/p&gt;
+&lt;p&gt;进入我们的项目&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; my-project
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;项目目录:{%asset_img 1.png dir%}&lt;/p&gt;
+&lt;p&gt;然后跑一下，启动命令&lt;code&gt;npm start&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;npm 命令的自定义可以在package.json里面的&lt;code&gt;scripts&lt;/code&gt;键值看到，默认的命令重写是:
+&amp;ldquo;scripts&amp;rdquo;: {
+&amp;ldquo;dev&amp;rdquo;: &amp;ldquo;webpack-dev-server &amp;ndash;inline &amp;ndash;progress &amp;ndash;config build/webpack.dev.conf.js&amp;rdquo;,
+&amp;ldquo;start&amp;rdquo;: &amp;ldquo;npm run dev&amp;rdquo;,
+&amp;ldquo;unit&amp;rdquo;: &amp;ldquo;jest &amp;ndash;config test/unit/jest.conf.js &amp;ndash;coverage&amp;rdquo;,
+&amp;ldquo;e2e&amp;rdquo;: &amp;ldquo;node test/e2e/runner.js&amp;rdquo;,
+&amp;ldquo;test&amp;rdquo;: &amp;ldquo;npm run unit &amp;amp;&amp;amp; npm run e2e&amp;rdquo;,
+&amp;ldquo;build&amp;rdquo;: &amp;ldquo;node build/build.js&amp;rdquo;
+},
+里面我们可以很OK的看到，其实npm start是等价于npm run dev的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我们启动的这个命令是&lt;code&gt;热重载&lt;/code&gt;，是&lt;code&gt;webpack&lt;/code&gt;的一个非常牛逼的功能，他会启动一个简单的server，你每次改代码它都会实时显示出来。主要细节可以baidu or Google&lt;/p&gt;
+&lt;p&gt;命令启动完成后，我们得到一个本地服务器地址，访问它:&lt;/p&gt;
+&lt;p&gt;{% asset_img 2.png server_url%}&lt;/p&gt;
+&lt;p&gt;得到hello world界面:&lt;/p&gt;
+&lt;p&gt;{% asset_img 3.png hello world %}&lt;/p&gt;
+&lt;p&gt;简单的&lt;code&gt;vue-cli&lt;/code&gt;就搭建好了&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

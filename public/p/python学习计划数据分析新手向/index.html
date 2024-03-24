@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="前言 欢迎来到Python的世界！！ 也许你已经听过许多的计算机编程语言，比如C/C++,比如经久不衰且流行的Java,比如适合写网页的JavaScript等等 你会很好奇，python和其他语言到底有什么不同，我们从开发效率来说，比如，完成同一个任务，C语言要写1000行代码，Java只需要写100行，而Python可能只要20行。 所以Python是一种非常高级的语言。 代码少，带来的是运行效率的低下，C程序运行1秒钟，Java程序可能需要2秒，而Python程序可能就需要10秒。 虽然我并不想介入语言之争，但是在github 2017的年度报告，Python超过了Java成为了第二名，这从侧面体现出Python的流行程度，连BAT、Google等等这些公司都在使用Python,所以不必担忧学习了Python之后未来用不上。 Python能干很多事情，日常任务，可以写网络游戏的后台，可以做网站，比如Youtube，就是使用Python写的 当然，也有Python不能做的事情，比如操作系统，这个只能用C语言写(接近底层且快)，开发APP，只能用Swift/Objective-C(iphone)或者Java/Kotlin(Android)，写游戏内核(比如PUBG的虚幻4引擎)，最好使用C/C++ python极其简单，哪怕你没有学过任何编程语言，会使用电脑，你只要上过初中的数学课，并且认真听了，就能学会这门编程语言。 虽然这么说，但是在python的高级程序设计中，这些抽象的知识也是很难学的(比如元编程、鸭子类型、函数式编程) 最后，人生苦短，我用Python。 国外大佬的Python全指南(官方中文版)(甚至包括如何装Python)(requests库之父)Hitchhiker&rsquo;s Guide to Python 一个基本的学习计划(面向数据类) 一个月基本要掌握的内容: 输入输出函数(input)(print) 数据类型和变量 字符串操作和编码 if、for in 、while python基础数据结构的基本使用(dict)(list)(tuple) and or not 逻辑运算符的使用 学会第三方库的导入 (基于快速上手的原则，我们暂时不学习面向对象编程,如果学有余力可以学习) 接触并使用函数 文件的IO读写 数据结构的高级特性(切片)(拆包)(生成式) 错误捕捉 ？？？？？ 大概的可能就这些，基本的学习教程可以自己看书或者看在线教程 我们可以练一些数学题来熟悉python，比如质数、水仙花数、公倍数之类的纯数学问题 然后我们的第一个方向就是爬虫，这个我们就不细讲，我们需要学会的几个库(其实只需要学会其中的几种功能): lxml BeautifulSoup requests json(标准库) 然后学一下HTML的基本知识,比如: 元素 属性 段落 再了解一下HTTP的基本知识: HTTP方法(get,post,put之类) URL cookie HTTP报文头部 学习一下chrome的检查元素(chrome/Firefox/Safari),了解网站的构造和服务器与网站如何交互 对于动态加载的网站,我们了解一下AJAX、异步加载,然后我们可以直接抓取服务器APi传输的数据: bilibili新番页面(因为有播放量等的缘故，所以需要随时更新而使用ajax) {% asset_img XHR.png bilibili%} 基本自己手写爬虫就没有任何问题了，如果想提高效率可以学习多线程或者协程(较难),如果嫌还是太麻烦，可以学习爬虫框架，比如scrapy.">
+<title>python学习计划(数据分析新手向)</title>
+
+<link rel='canonical' href='https://kinokosu3.github.io/p/python%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%96%B0%E6%89%8B%E5%90%91/'>
+
+<link rel="stylesheet" href="/scss/style.min.a7a053668ceebf8b05187348b96ad7952720fc1f8071cb2e56e51480f0500c7e.css"><meta property='og:title' content="python学习计划(数据分析新手向)">
+<meta property='og:description' content="前言 欢迎来到Python的世界！！ 也许你已经听过许多的计算机编程语言，比如C/C++,比如经久不衰且流行的Java,比如适合写网页的JavaScript等等 你会很好奇，python和其他语言到底有什么不同，我们从开发效率来说，比如，完成同一个任务，C语言要写1000行代码，Java只需要写100行，而Python可能只要20行。 所以Python是一种非常高级的语言。 代码少，带来的是运行效率的低下，C程序运行1秒钟，Java程序可能需要2秒，而Python程序可能就需要10秒。 虽然我并不想介入语言之争，但是在github 2017的年度报告，Python超过了Java成为了第二名，这从侧面体现出Python的流行程度，连BAT、Google等等这些公司都在使用Python,所以不必担忧学习了Python之后未来用不上。 Python能干很多事情，日常任务，可以写网络游戏的后台，可以做网站，比如Youtube，就是使用Python写的 当然，也有Python不能做的事情，比如操作系统，这个只能用C语言写(接近底层且快)，开发APP，只能用Swift/Objective-C(iphone)或者Java/Kotlin(Android)，写游戏内核(比如PUBG的虚幻4引擎)，最好使用C/C++ python极其简单，哪怕你没有学过任何编程语言，会使用电脑，你只要上过初中的数学课，并且认真听了，就能学会这门编程语言。 虽然这么说，但是在python的高级程序设计中，这些抽象的知识也是很难学的(比如元编程、鸭子类型、函数式编程) 最后，人生苦短，我用Python。 国外大佬的Python全指南(官方中文版)(甚至包括如何装Python)(requests库之父)Hitchhiker&rsquo;s Guide to Python 一个基本的学习计划(面向数据类) 一个月基本要掌握的内容: 输入输出函数(input)(print) 数据类型和变量 字符串操作和编码 if、for in 、while python基础数据结构的基本使用(dict)(list)(tuple) and or not 逻辑运算符的使用 学会第三方库的导入 (基于快速上手的原则，我们暂时不学习面向对象编程,如果学有余力可以学习) 接触并使用函数 文件的IO读写 数据结构的高级特性(切片)(拆包)(生成式) 错误捕捉 ？？？？？ 大概的可能就这些，基本的学习教程可以自己看书或者看在线教程 我们可以练一些数学题来熟悉python，比如质数、水仙花数、公倍数之类的纯数学问题 然后我们的第一个方向就是爬虫，这个我们就不细讲，我们需要学会的几个库(其实只需要学会其中的几种功能): lxml BeautifulSoup requests json(标准库) 然后学一下HTML的基本知识,比如: 元素 属性 段落 再了解一下HTTP的基本知识: HTTP方法(get,post,put之类) URL cookie HTTP报文头部 学习一下chrome的检查元素(chrome/Firefox/Safari),了解网站的构造和服务器与网站如何交互 对于动态加载的网站,我们了解一下AJAX、异步加载,然后我们可以直接抓取服务器APi传输的数据: bilibili新番页面(因为有播放量等的缘故，所以需要随时更新而使用ajax) {% asset_img XHR.png bilibili%} 基本自己手写爬虫就没有任何问题了，如果想提高效率可以学习多线程或者协程(较难),如果嫌还是太麻烦，可以学习爬虫框架，比如scrapy.">
+<meta property='og:url' content='https://kinokosu3.github.io/p/python%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%96%B0%E6%89%8B%E5%90%91/'>
+<meta property='og:site_name' content='kinokosu3のblog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='python' /><meta property='article:published_time' content='2018-03-17T10:57:22&#43;00:00'/><meta property='article:modified_time' content='2018-03-17T10:57:22&#43;00:00'/>
+<meta name="twitter:title" content="python学习计划(数据分析新手向)">
+<meta name="twitter:description" content="前言 欢迎来到Python的世界！！ 也许你已经听过许多的计算机编程语言，比如C/C++,比如经久不衰且流行的Java,比如适合写网页的JavaScript等等 你会很好奇，python和其他语言到底有什么不同，我们从开发效率来说，比如，完成同一个任务，C语言要写1000行代码，Java只需要写100行，而Python可能只要20行。 所以Python是一种非常高级的语言。 代码少，带来的是运行效率的低下，C程序运行1秒钟，Java程序可能需要2秒，而Python程序可能就需要10秒。 虽然我并不想介入语言之争，但是在github 2017的年度报告，Python超过了Java成为了第二名，这从侧面体现出Python的流行程度，连BAT、Google等等这些公司都在使用Python,所以不必担忧学习了Python之后未来用不上。 Python能干很多事情，日常任务，可以写网络游戏的后台，可以做网站，比如Youtube，就是使用Python写的 当然，也有Python不能做的事情，比如操作系统，这个只能用C语言写(接近底层且快)，开发APP，只能用Swift/Objective-C(iphone)或者Java/Kotlin(Android)，写游戏内核(比如PUBG的虚幻4引擎)，最好使用C/C++ python极其简单，哪怕你没有学过任何编程语言，会使用电脑，你只要上过初中的数学课，并且认真听了，就能学会这门编程语言。 虽然这么说，但是在python的高级程序设计中，这些抽象的知识也是很难学的(比如元编程、鸭子类型、函数式编程) 最后，人生苦短，我用Python。 国外大佬的Python全指南(官方中文版)(甚至包括如何装Python)(requests库之父)Hitchhiker&rsquo;s Guide to Python 一个基本的学习计划(面向数据类) 一个月基本要掌握的内容: 输入输出函数(input)(print) 数据类型和变量 字符串操作和编码 if、for in 、while python基础数据结构的基本使用(dict)(list)(tuple) and or not 逻辑运算符的使用 学会第三方库的导入 (基于快速上手的原则，我们暂时不学习面向对象编程,如果学有余力可以学习) 接触并使用函数 文件的IO读写 数据结构的高级特性(切片)(拆包)(生成式) 错误捕捉 ？？？？？ 大概的可能就这些，基本的学习教程可以自己看书或者看在线教程 我们可以练一些数学题来熟悉python，比如质数、水仙花数、公倍数之类的纯数学问题 然后我们的第一个方向就是爬虫，这个我们就不细讲，我们需要学会的几个库(其实只需要学会其中的几种功能): lxml BeautifulSoup requests json(标准库) 然后学一下HTML的基本知识,比如: 元素 属性 段落 再了解一下HTTP的基本知识: HTTP方法(get,post,put之类) URL cookie HTTP报文头部 学习一下chrome的检查元素(chrome/Firefox/Safari),了解网站的构造和服务器与网站如何交互 对于动态加载的网站,我们了解一下AJAX、异步加载,然后我们可以直接抓取服务器APi传输的数据: bilibili新番页面(因为有播放量等的缘故，所以需要随时更新而使用ajax) {% asset_img XHR.png bilibili%} 基本自己手写爬虫就没有任何问题了，如果想提高效率可以学习多线程或者协程(较难),如果嫌还是太麻烦，可以学习爬虫框架，比如scrapy.">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/40928807_hu2315d04c5fb87fec33fa788c664ba42a_29261_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">kinokosu3のblog</a></h1>
+            <h2 class="site-description">Golang、Kubernetes、Cloud Native、Essays</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/kinokosu3'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#一个基本的学习计划面向数据类">一个基本的学习计划(面向数据类)</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/python%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%96%B0%E6%89%8B%E5%90%91/">python学习计划(数据分析新手向)</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 17, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="前言">前言</h2>
+<p>欢迎来到<code>Python</code>的世界！！</p>
+<!-- more -->
+<p>也许你已经听过许多的计算机编程语言，比如<code>C/C++</code>,比如经久不衰且流行的<code>Java</code>,比如适合写网页的<code>JavaScript</code>等等</p>
+<p>你会很好奇，<code>python</code>和其他语言到底有什么不同，我们从开发效率来说，比如，完成同一个任务，C语言要写1000行代码，Java只需要写100行，而Python可能只要20行。</p>
+<p>所以<code>Python</code>是一种非常高级的语言。</p>
+<p>代码少，带来的是运行效率的低下，C程序运行1秒钟，Java程序可能需要2秒，而Python程序可能就需要10秒。</p>
+<p>虽然我并不想介入语言之争，但是在<code>github</code> 2017的年度报告，<code>Python</code>超过了<code>Java</code>成为了第二名，这从侧面体现出<code>Python</code>的流行程度，连BAT、Google等等这些公司都在使用<code>Python</code>,所以不必担忧学习了<code>Python</code>之后未来用不上。</p>
+<p><code>Python</code>能干很多事情，日常任务，可以写网络游戏的后台，可以做网站，比如<code>Youtube</code>，就是使用<code>Python</code>写的</p>
+<p>当然，也有<code>Python</code>不能做的事情，比如操作系统，这个只能用C语言写(接近底层且快)，开发APP，只能用<code>Swift/Objective-C</code>(iphone)或者<code>Java/Kotlin</code>(Android)，写游戏内核(比如PUBG的虚幻4引擎)，最好使用<code>C/C++</code></p>
+<p><code>python</code>极其简单，哪怕你没有学过任何编程语言，会使用电脑，你只要上过初中的数学课，并且认真听了，就能学会这门编程语言。</p>
+<p>虽然这么说，但是在<code>python</code>的高级程序设计中，这些抽象的知识也是很难学的(比如元编程、鸭子类型、函数式编程)</p>
+<p>最后，人生苦短，我用Python。</p>
+<blockquote>
+<p>国外大佬的Python全指南(官方中文版)(甚至包括如何装Python)(requests库之父)<a class="link" href="https://pythonguidecn.readthedocs.io/zh/latest/"  target="_blank" rel="noopener"
+    >Hitchhiker&rsquo;s Guide to Python</a></p>
+</blockquote>
+<h2 id="一个基本的学习计划面向数据类">一个基本的学习计划(面向数据类)</h2>
+<p>一个月基本要掌握的内容:</p>
+<ul>
+<li>
+<p>输入输出函数(input)(print)</p>
+</li>
+<li>
+<p>数据类型和变量</p>
+</li>
+<li>
+<p>字符串操作和编码</p>
+</li>
+<li>
+<p>if、for in 、while</p>
+</li>
+<li>
+<p>python基础数据结构的基本使用(dict)(list)(tuple)</p>
+</li>
+<li>
+<p>and or not 逻辑运算符的使用</p>
+</li>
+<li>
+<p>学会第三方库的导入</p>
+</li>
+</ul>
+<p>(基于快速上手的原则，我们暂时不学习面向对象编程,如果学有余力可以学习)</p>
+<ul>
+<li>
+<p>接触并使用函数</p>
+</li>
+<li>
+<p>文件的IO读写</p>
+</li>
+<li>
+<p>数据结构的高级特性(切片)(拆包)(生成式)</p>
+</li>
+<li>
+<p>错误捕捉</p>
+</li>
+<li>
+<p>？？？？？</p>
+</li>
+</ul>
+<p>大概的可能就这些，基本的学习教程可以自己看书或者看在线教程</p>
+<p>我们可以练一些数学题来熟悉<code>python</code>，比如质数、水仙花数、公倍数之类的纯数学问题</p>
+<p>然后我们的第一个方向就是爬虫，这个我们就不细讲，我们需要学会的几个库(其实只需要学会其中的几种功能):</p>
+<ul>
+<li>
+<p>lxml</p>
+</li>
+<li>
+<p>BeautifulSoup</p>
+</li>
+<li>
+<p>requests</p>
+</li>
+<li>
+<p>json(标准库)</p>
+</li>
+</ul>
+<p>然后学一下HTML的基本知识,比如:</p>
+<ul>
+<li>元素</li>
+<li>属性</li>
+<li>段落</li>
+</ul>
+<p>再了解一下HTTP的基本知识:</p>
+<ul>
+<li>HTTP方法(get,post,put之类)</li>
+<li>URL</li>
+<li>cookie</li>
+<li>HTTP报文头部</li>
+</ul>
+<p>学习一下<code>chrome</code>的检查元素(chrome/Firefox/Safari),了解网站的构造和服务器与网站如何交互</p>
+<p>对于动态加载的网站,我们了解一下AJAX、异步加载,然后我们可以直接抓取服务器APi传输的数据:</p>
+<p>bilibili新番页面(因为有播放量等的缘故，所以需要随时更新而使用ajax)
+{% asset_img XHR.png bilibili%}</p>
+<p>基本自己手写爬虫就没有任何问题了，如果想提高效率可以学习多线程或者协程(较难),如果嫌还是太麻烦，可以学习爬虫框架，比如<code>scrapy</code>.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/python/">Python</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2017 - 
+        
+        2024 kinokosu3
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.24.2">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

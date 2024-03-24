@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>OpenCV on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/opencv/</link>
+        <description>Recent content in OpenCV on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Thu, 22 Mar 2018 21:38:48 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/opencv/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>OpenCV-python全养成</title>
+        <link>https://kinokosu3.github.io/p/opencv-python%E5%85%A8%E5%85%BB%E6%88%90/</link>
+        <pubDate>Thu, 22 Mar 2018 21:38:48 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/opencv-python%E5%85%A8%E5%85%BB%E6%88%90/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;中文的opencv-python内容太少了！！！！没办法只好啃英文文档了,官方文档saikou！！！&lt;/p&gt;
+&lt;p&gt;地址&lt;a class=&#34;link&#34; href=&#34;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;OpenCV-Python Tutorials&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;入门&#34;&gt;入门&lt;/h2&gt;
+&lt;h3 id=&#34;基本操作&#34;&gt;基本操作&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;cv2.imread（），cv2.imshow（），cv2.imwrite（）&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cv2.imread()&lt;/code&gt;,可以使用以下3个flag:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cv2.IMREAD_COLOR&lt;/code&gt;：加载彩色图像。图像的任何透明度都将被忽略。这是默认标志。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cv2.IMREAD_GRAYSCALE&lt;/code&gt;：以灰度模式加载图像&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cv2.IMREAD_UNCHANGED&lt;/code&gt;：加载包含Alpha通道的图像&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;代号是1,0,-1&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;img = cv2.imread(&#39;1.jpg&#39;, 0)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cv2.imshow()&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;cv2.waitKey（）&lt;/code&gt;是一个键盘绑定函数，如果传递0，他将无限期等待键盘输入，敲击后，程序会继续，也可以使用特定的按键。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;cv2.destroyAllWindows（）&lt;/code&gt;只是销毁我们创建的所有窗口。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果你想销毁任何特定的窗口，使用函数&lt;code&gt;cv2.destroyWindow（）&lt;/code&gt;作为参数传递确切的窗口名称.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果你先创建了窗口，再创建图片，可以使用&lt;code&gt;cv2.namedWindow()&lt;/code&gt;,有两个&lt;code&gt;flag&lt;/code&gt;,默认&lt;code&gt;cv2.WINDOW_AUTOSIZE&lt;/code&gt;,&lt;code&gt;cv2.WINDOW_NORMAL&lt;/code&gt;可以调整窗口大小。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;cv2.imwrite()&lt;/code&gt; 保存一张图片 &lt;code&gt;cv2.imwrite(&#39;messigray.png&#39;,img)&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;matplotlib使用&#34;&gt;Matplotlib使用&lt;/h3&gt;
+&lt;p&gt;一个简单的例子:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;numpy&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;np&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;cv2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;matplotlib&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pyplot&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;plt&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;img&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;imread&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;messi5.jpg&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;plt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;imshow&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;img&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cmap&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;gray&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;interpolation&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;bicubic&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;plt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;xticks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([]),&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;plt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;yticks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([])&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# to hide tick values on X and Y axis&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;plt&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;show&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;matplotlib.pylot.imshow&lt;/code&gt;选项:&lt;/p&gt;
+&lt;p&gt;cmap &lt;a class=&#34;link&#34; href=&#34;https://matplotlib.org/gallery/color/colormap_reference.html#sphx-glr-gallery-color-colormap-reference-py&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;colormap-example&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;perceptual uniform sequential colormaps：感知均匀的序列化 colormap&lt;/li&gt;
+&lt;li&gt;sequential colormaps：序列化（连续化）色图 colormap；&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;gray：0-255 级灰度，0：黑色，1：白色，黑底白字；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;gray_r：翻转 gray 的显示，如果 gray 将图像显示为黑底白字，gray_r 会将其显示为白底黑字；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;diverging colormaps：两端发散的色图 colormaps；&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;seismic&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;qualitative colormaps：量化（离散化）色图；&lt;/li&gt;
+&lt;li&gt;miscellaneous colormaps：其他色图；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;其实说白了就是一个色彩参照&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;interpolation 内插法选择&lt;/p&gt;
+&lt;p&gt;有很多选择，比如:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;nearest 最近邻内插&lt;/li&gt;
+&lt;li&gt;bilinear 双线性内插&lt;/li&gt;
+&lt;li&gt;bicubic 双三次内插&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;视频使用&#34;&gt;视频使用&lt;/h2&gt;
+&lt;p&gt;暂不了解&lt;/p&gt;
+&lt;h2 id=&#34;绘制函数&#34;&gt;绘制函数&lt;/h2&gt;
+&lt;p&gt;开始之前我们先讲一个问题&lt;/p&gt;
+&lt;h3 id=&#34;图像通道问题&#34;&gt;图像通道问题&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;较难理解，知乎有一个同理问题&lt;a class=&#34;link&#34; href=&#34;https://www.zhihu.com/question/21849710&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;如何通俗易懂地讲解 Photoshop 中的「通道」概念？&lt;/a&gt;这个通俗易懂，这个就是彩色图像模型，下面的解释来自&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/chenyusiyuan/article/details/4662783&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;OpenCV学习笔记（7）图像的通道（channels）问题&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;图像的通道只有1,3,4通道，因为我们描述一个像素点，如果是灰度，我们一个通道就可以了，如果一个像素点，有RGB三种颜色来描述它，就是三通道.4通道大概是加一个A通道(RGBA)，透明度，又叫alpha通道.&lt;/p&gt;
+&lt;h3 id=&#34;线段&#34;&gt;线段&lt;/h3&gt;
+&lt;p&gt;传递起始和结束坐标、颜色、厚度
+比如蓝色的厚度5px的线段
+&lt;code&gt;cv2.line(img,(0,0),(511,511),(255,0,0),5)&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;矩形&#34;&gt;矩形&lt;/h3&gt;
+&lt;p&gt;左上角和右下角的坐标
+&lt;code&gt;cv2.rectangle(img,(384,0),(510,128),(0,255,0),3)&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;圆&#34;&gt;圆&lt;/h3&gt;
+&lt;p&gt;中心坐标和半径
+&lt;code&gt;cv2.circle(img,(447,63), 63, (0,0,255), -1)&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;多边形&#34;&gt;多边形&lt;/h3&gt;
+&lt;p&gt;顶点坐标，需要int32类型，将其转换成rowsx1x2的形状的数组，rows为顶点数&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pts&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;np&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;array&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;30&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;70&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;50&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;np&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;int32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# newshape重置参数 行列每个&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pts&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pts&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reshape&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;cv2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;polylines&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;img&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;cv2.polylines用于绘制多组线，line只能绘制一组&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

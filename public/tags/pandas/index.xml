@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Pandas on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/pandas/</link>
+        <description>Recent content in Pandas on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Wed, 06 Jun 2018 16:38:26 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/pandas/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>pandas一些技巧</title>
+        <link>https://kinokosu3.github.io/p/pandas%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/</link>
+        <pubDate>Wed, 06 Jun 2018 16:38:26 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/pandas%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/</guid>
+        <description>&lt;h2 id=&#34;dataframe的一些技巧操作&#34;&gt;DataFrame的一些技巧操作&lt;/h2&gt;
+&lt;h3 id=&#34;转置&#34;&gt;转置&lt;/h3&gt;
+&lt;p&gt;方法加T &lt;code&gt;.T&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;数据合并&#34;&gt;数据合并&lt;/h3&gt;
+&lt;p&gt;主要方法 &lt;code&gt;pd.concat&lt;/code&gt;, 参数有&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;axis&lt;/code&gt; 合并方向 &lt;code&gt;axis=0&lt;/code&gt; 纵向合并&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ignore_index&lt;/code&gt; 重置index ignore_index=True&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;join&lt;/code&gt; 合并方式 &lt;code&gt;join=&#39;outer&#39;&lt;/code&gt;为预设值，因此未设定任何参数时，函数默认join=&amp;lsquo;outer&amp;rsquo;。此方式是依照column来做纵向合并，有相同的column上下合并在一起，其他独自的column个自成列，原本没有值的位置皆以NaN填充。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;遍历dataframe行&#34;&gt;遍历dataframe行&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;方法&lt;code&gt;df.iterrows()&lt;/code&gt;, 迭代，使用&lt;code&gt;for index, row in df.iterrows()&lt;/code&gt;, index返回index， row返回行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;应该会有相同的方法遍历的列。&lt;/p&gt;
+&lt;h3 id=&#34;重置索引&#34;&gt;重置索引&lt;/h3&gt;
+&lt;p&gt;可以使用&lt;code&gt;reindex&lt;/code&gt;、或者重新对&lt;code&gt;pandas.DataFrame.index&lt;/code&gt;进行赋值,如果仅仅是计数索引(比如从0开始)，可以使用语句&lt;code&gt;df1.reset_index(drop=True, inplace=True)&lt;/code&gt;，&lt;code&gt;drop&lt;/code&gt;是是否保存原索引列
+，&lt;code&gt;inplace&lt;/code&gt;是否直接对dataframe改写。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

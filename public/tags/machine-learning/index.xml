@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Machine Learning on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/machine-learning/</link>
+        <description>Recent content in Machine Learning on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Mon, 09 Apr 2018 22:15:08 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>初识机器学习-线性模型(讲习用)</title>
+        <link>https://kinokosu3.github.io/p/%E5%88%9D%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E8%AE%B2%E4%B9%A0%E7%94%A8/</link>
+        <pubDate>Mon, 09 Apr 2018 22:15:08 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/%E5%88%9D%E8%AF%86%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E8%AE%B2%E4%B9%A0%E7%94%A8/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;给定样本$\vec x$,我们用列向量表示该样本$\vec x$=$(x1,x2,x3)^T$。样本有n种特征，我们用x(i)表示样本$\vec x$的第i个特征。&lt;/p&gt;
+&lt;p&gt;线性模型(linear model)的形式为:&lt;/p&gt;
+&lt;p&gt;f($\vec x$) = $\vec w$·$\vec x$ + b&lt;/p&gt;
+&lt;p&gt;$\vec w$是每个特征对的权重生成的权重向量&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;代价函数&#34;&gt;代价函数&lt;/h2&gt;
+&lt;p&gt;我们来了解一个机器学习里非常重要的概念，代价函数(cost function)比如我们有一个模型y = $\theta 0$+$\theta 1$x,我们要确定$\theta 0$和$\theta 1$的值&lt;/p&gt;
+&lt;p&gt;我们简单的定义几个值:&lt;/p&gt;
+&lt;p&gt;{%asset_img 1.png linear_cost_function_1%}&lt;/p&gt;
+&lt;p&gt;这是一个简单的数据集，我们要使我们的直线尽可能的靠近这些点(拟合):&lt;/p&gt;
+&lt;p&gt;{%asset_img 2.png linear_cost_function_2%}&lt;/p&gt;
+&lt;p&gt;我们如何评定？拿f(x) 和y比较，我们要使这两个的值的差异为最小，这个就是一个误差最小化问题，&lt;/p&gt;
+&lt;p&gt;我们拿每一个误差相加平方，得公式(求误差均值):$\frac{1}{2m}\sum_{i=1}^m(f(x)^i - y^i)^2$&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cost function&lt;/code&gt;和模型的对比:&lt;/p&gt;
+&lt;p&gt;{% asset_img 3.png cost_function %}&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2主要用来化掉该式偏导后得出的常数&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;上面仅仅是一个特征的代价函数，下面是两个特征的代价函数:&lt;/p&gt;
+&lt;p&gt;{% asset_img 4.png double_cost_function %}&lt;/p&gt;
+&lt;h2 id=&#34;代价函数求最优解&#34;&gt;代价函数求最优解&lt;/h2&gt;
+&lt;p&gt;我们如何求到最小值，现在来讲解两种方法，&lt;code&gt;最小二乘法&lt;/code&gt;和&lt;code&gt;梯度下降法&lt;/code&gt;,&lt;/p&gt;
+&lt;p&gt;我们回忆一下导数的意义:&lt;/p&gt;
+&lt;p&gt;导数反映的是函数y=f(x)在某一点处沿x轴正方向的变化率。再强调一遍，是函数f(x)在x轴上某一点处沿着x轴正方向的变化率/变化趋势。直观地看，也就是在x轴上某一点处，如果f’(x)&amp;gt;0，说明f(x)的函数值在x点沿x轴正方向是趋于增加的；如果f’(x)&amp;lt;0，说明f(x)的函数值在x点沿x轴正方向是趋于减少的。&lt;/p&gt;
+&lt;p&gt;其实就是函数中某点的切线斜率。&lt;/p&gt;
+&lt;p&gt;偏导数也是一样，不过是对于多元函数,偏导数表示固定面上一点的切线斜率。比如我们发现ƒ在某点与xOz平面平行的切线的斜率是3，记为$\frac{\partial f}{\partial x}$ = 3&lt;/p&gt;
+&lt;p&gt;最小二乘法:&lt;/p&gt;
+&lt;p&gt;我们对式内的特征进行偏导，然后对偏导后的式子等于0，就可以求出每个特征权重最优解的&lt;code&gt;闭式解&lt;/code&gt;。
+这是直接求出最优解的一个方法，我们重点讲一下梯度下降(Gradient Descent):&lt;/p&gt;
+&lt;p&gt;梯度下降(Gradient Descent):&lt;/p&gt;
+&lt;p&gt;公式:&lt;/p&gt;
+&lt;p&gt;{% asset_img 5.png Gradient_Descent_1%}&lt;/p&gt;
+&lt;p&gt;我们反复执行这个公式，直到收敛，这个公式怎么来的呢？？$\alpha$是&lt;code&gt;学习速率&lt;/code&gt;，就是我们每一次收敛时候所走的步数。&lt;/p&gt;
+&lt;p&gt;一个收敛的例子:&lt;/p&gt;
+&lt;p&gt;{% asset_img 6.png Gradient_Descent%}&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

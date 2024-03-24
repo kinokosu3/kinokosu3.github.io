@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>机器学习 on kinokosu3のblog</title>
+        <link>https://kinokosu3.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+        <description>Recent content in 机器学习 on kinokosu3のblog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>kinokosu3</copyright>
+        <lastBuildDate>Thu, 07 Jun 2018 19:09:00 +0000</lastBuildDate><atom:link href="https://kinokosu3.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>机器学习的一些评价方法</title>
+        <link>https://kinokosu3.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%84%E4%BB%B7%E6%96%B9%E6%B3%95/</link>
+        <pubDate>Thu, 07 Jun 2018 19:09:00 +0000</pubDate>
+        
+        <guid>https://kinokosu3.github.io/p/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AF%84%E4%BB%B7%E6%96%B9%E6%B3%95/</guid>
+        <description>&lt;h2 id=&#34;tensorflow里的loss-function&#34;&gt;tensorflow里的loss function&lt;/h2&gt;
+&lt;h3 id=&#34;cross_entropy交叉熵&#34;&gt;cross_entropy交叉熵&lt;/h3&gt;
+&lt;p&gt;交叉熵刻画的是两个概率分布之间的距离，我们通过softmax回归将神经网络前向传播得到的结果变成交叉熵要求的概率分布得分。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;softmax&lt;/code&gt;函数用于多分类神经网络输出, 使得神经网络输出层输出的是一个概率分布，哪个点的概率高代表着某个类别的概率高。
+&lt;code&gt;sigmoid&lt;/code&gt;函数也用于隐层输出，使用哪个函数看业务需求&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h4 id=&#34;sigmoid_cross_entropy_with_logits&#34;&gt;&lt;code&gt;sigmoid_cross_entropy_with_logits&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;这个函数的输入是&lt;code&gt;logits&lt;/code&gt;和&lt;code&gt;targets&lt;/code&gt;，&lt;code&gt;logits&lt;/code&gt;就是神经网络模型中的 W * X矩阵，注意不需要经过&lt;code&gt;sigmoid&lt;/code&gt;，而&lt;code&gt;targets&lt;/code&gt;的&lt;code&gt;shape&lt;/code&gt;和&lt;code&gt;logits&lt;/code&gt;相同，就是正确的&lt;code&gt;label&lt;/code&gt;值，例如这个模型一次要判断100张图是否包含10种动物，这两个输入的shape都是[100, 10]。注释中还提到这10个分类之间是独立的、不要求是互斥，这种问题我们成为多目标，例如判断图片中是否包含10种动物，label值可以包含多个1或0个1，还有一种问题是多分类问题，例如我们对年龄特征分为5段，只允许5个值有且只有1个值为1，这种问题可以直接用这个函数吗？答案是不可以。&lt;/p&gt;
+&lt;p&gt;&amp;ndash; 引用&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/heyc861221/article/details/80127148&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TensorFlow四种Cross Entropy算法实现和应用&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;对于多分类问题, 我们可以使用softmax函数。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;softmax_cross_entropy_with_logits&#34;&gt;&lt;code&gt;softmax_cross_entropy_with_logits&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;这个函数只适合单目标的二分类或者多分类问题。&lt;/p&gt;
+&lt;p&gt;对于多分类问题，例如我们的年龄分为5类，并且人工编码为0、1、2、3、4，因为输出值是5维的特征，因此我们需要人工做onehot encoding分别编码为00001、00010、00100、01000、10000，才可以作为这个函数的输入。
+也就是说，原数据集的&lt;code&gt;label&lt;/code&gt;需要做&lt;code&gt;one-hot&lt;/code&gt;处理才可以使用这个函数。&lt;/p&gt;
+&lt;p&gt;具体的执行流程大概分为两步，第一步首先是对网络最后一层的输出做一个softmax。&lt;/p&gt;
+&lt;p&gt;这里需要注意的是，这个函数返回值不是一个数，而是一个向量，如果要求交叉熵，我们要在做一步&lt;code&gt;tf.resuce_sum&lt;/code&gt;操作，就是对向量里面的所有元素求和, 最后就能得到Hy′(y),如果要求loss，则需要做一步&lt;code&gt;tf.reduce_mean&lt;/code&gt;操作，对向量求均值.&lt;/p&gt;
+&lt;p&gt;warning：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tenosrflow中集成的交叉熵操作是施加在未经过&lt;code&gt;Softmax&lt;/code&gt;处理的&lt;code&gt;logits&lt;/code&gt;上, 这个操作的输入&lt;code&gt;logits&lt;/code&gt;是未经缩放的, 该操作内部会对&lt;code&gt;logits&lt;/code&gt;使用&lt;code&gt;Softmax&lt;/code&gt;操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;tfnnsparse_softmax_cross_entropy_with_logits&#34;&gt;&lt;code&gt;tf.nn.sparse_softmax_cross_entropy_with_logits&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;softmax_cross_entropy_with_logits&lt;/code&gt;的易用版本`&lt;/p&gt;
+&lt;p&gt;该函数与&lt;code&gt;tf.nn.softmax_cross_entropy_with_logits()&lt;/code&gt;函数十分相似，唯一的区别在于&lt;code&gt;labels&lt;/code&gt;的&lt;code&gt;shape&lt;/code&gt;，该函数的&lt;code&gt;labels&lt;/code&gt;要求是排他性的即只有一个正确的类别，如果&lt;code&gt;labels&lt;/code&gt;的每一行不需要进行&lt;code&gt;one_hot&lt;/code&gt;表示，可以使用&lt;code&gt;tf.nn.sparse_softmax_cross_entropy_with_logits()&lt;/code&gt;。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
